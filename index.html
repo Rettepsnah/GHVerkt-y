@@ -12,79 +12,113 @@
     <nav class="navbar">
         <div class="navbar-wrapper">
             <div class="nav-left">
-                <img src="logo.png.png" alt="CAA Norway" class="nav-logo">
+                <img src="logo.png" alt="CAA Norway" class="nav-logo">
             </div>
             <div class="nav-center">
-                <h1 class="nav-title">Felleseuropeisk regelverk for ground handling</h1>
+                <h1 class="nav-title">Samsvarsveileder: Ground Handling</h1>
             </div>
             <div class="nav-right"></div>
         </div>
     </nav>
 
     <main class="container">
-        <div class="flow-steps-container">
-            <div class="flow-step" id="step-indicator-easa_airport">
-                <div class="step-circle">1</div>
-                <span>Lufthavn</span>
+        
+        <div id="start-page" class="card start-card fade-in">
+            <div class="start-header">
+                <h2>Veileder for forordning (EU) 2025/20</h2>
+                <p class="subtitle">Felleseuropeisk regelverk for bakketjenester</p>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-entity_type">
-                <div class="step-circle">2</div>
-                <span>Organisasjon</span>
+            
+            <div class="start-content">
+                <p>Denne veilederen hjelper aktører i luftfarten med å avklare krav til samsvar med det nye felleseuropeiske regelverket for bakketjenester (Ground Handling).</p>
+                
+                <ul class="start-list">
+                    <li><i class="fas fa-check-circle"></i> Sjekk om din lufthavn er omfattet</li>
+                    <li><i class="fas fa-check-circle"></i> Avklar hvilken type aktør dere er</li>
+                    <li><i class="fas fa-check-circle"></i> Få oversikt over unntak og krav</li>
+                </ul>
+
+                <div class="alert-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Resultatet er veiledende. Ved tvil bør Luftfartstilsynet kontaktes direkte.</span>
+                </div>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-service_type">
-                <div class="step-circle">3</div>
-                <span>Tjenester</span>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-exemptions">
-                <div class="step-circle">4</div>
-                <span>Unntak</span>
+
+            <div class="start-footer">
+                <button onclick="startWizard()" class="btn-start">
+                    Start Veileder <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="last-updated">
+                    Sist oppdatert: <strong>17.01.2026</strong>
+                </div>
             </div>
         </div>
 
-        <div class="card-wrapper">
-            <div id="quiz-card" class="question-card">
-                
-                <div id="question-content">
-                    <h2 id="question-text">Laster spørsmål...</h2>
-                    
-                    <div id="icao-search-container" class="hidden">
-                        <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
-                        <div class="icao-input-wrapper">
-                            <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
-                            <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
+        <div id="wizard-container" class="hidden">
+            <div class="flow-steps-container">
+                <div class="flow-step" id="step-indicator-easa_airport">
+                    <div class="step-circle">1</div>
+                    <span>Lufthavn</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-entity_type">
+                    <div class="step-circle">2</div>
+                    <span>Aktør</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-service_type">
+                    <div class="step-circle">3</div>
+                    <span>Tjenester</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-exemptions">
+                    <div class="step-circle">4</div>
+                    <span>Unntak</span>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 id="step-title">Laster...</h2>
+                </div>
+
+                <div class="card-body">
+                    <div id="question-content">
+                        <div id="icao-search-container" class="hidden">
+                            <div class="icao-input-wrapper">
+                                <input type="text" id="icao-input" placeholder="F.eks. ENGM" maxlength="4">
+                                <span class="search-icon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <p id="icao-status"></p>
                         </div>
-                        <p id="icao-status"></p>
+
+                        <div id="info-grid" class="info-grid hidden"></div>
+
+                        <div id="info-box" class="info-box hidden"></div>
+
+                        <div id="service-detail-box" class="service-info-display hidden">
+                            <h4 id="service-title"></h4>
+                            <div id="service-text"></div>
+                        </div>
+                        
+                        <div id="options-container" class="button-grid-main"></div>
+                        
+                        <div id="secondary-options-container" class="button-grid-secondary"></div>
                     </div>
 
-                    <div id="info-grid" class="info-grid hidden"></div>
-
-                    <div id="info-box" class="info-box hidden"></div>
-
-                    <div id="service-detail-box" class="service-info-display hidden">
-                        <h4 id="service-title"></h4>
-                        <div id="service-text"></div>
+                    <div id="result-area" class="hidden">
+                        <h2 class="result-header">Konklusjon</h2>
+                        <div id="result-box" class="result-message"></div>
+                        <div class="button-footer">
+                            <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                        </div>
                     </div>
-                    
-                    <div id="options-container" class="button-grid-main"></div>
-                    
-                    <div id="secondary-options-container" class="button-grid-secondary"></div>
-                </div>
 
-                <div id="result-area" class="hidden">
-                    <h2 class="result-header">Konklusjon</h2>
-                    <div id="result-box" class="result-message"></div>
-                    <div class="button-footer">
-                        <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                    <div class="card-footer">
+                        <button id="back-btn" class="btn-back hidden" onclick="goBack()">
+                            <i class="fas fa-arrow-left"></i> Gå tilbake
+                        </button>
                     </div>
-                </div>
-
-                <div class="card-footer">
-                    <button id="back-btn" class="btn-back hidden" onclick="goBack()">
-                        <i class="fas fa-arrow-left"></i> Gå tilbake
-                    </button>
                 </div>
             </div>
         </div>
