@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsvarsvurdering (EU) 2025/20 - CAA Norway</title>
+    <link rel="stylesheet" href="stil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-wrapper">
+            <div class="nav-left">
+                <img src="logo.png.png" alt="CAA Norway" class="nav-logo">
+            </div>
+            <div class="nav-center">
+                <h1 class="nav-title">Felleseuropeisk regelverk for ground handling</h1>
+            </div>
+            <div class="nav-right"></div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="flow-steps-container">
+            <div class="flow-step" id="step-indicator-easa_airport">
+                <div class="step-circle">1</div>
+                <span>Lufthavn</span>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-entity_type">
+                <div class="step-circle">2</div>
+                <span>Organisasjon</span>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-service_type">
+                <div class="step-circle">3</div>
+                <span>Tjenester</span>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-exemptions">
+                <div class="step-circle">4</div>
+                <span>Unntak</span>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div id="quiz-card" class="question-card">
+                
+                <div id="question-content">
+                    <h2 id="question-text">Laster spørsmål...</h2>
+                    
+                    <div id="icao-search-container" class="hidden">
+                        <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
+                        <div class="icao-input-wrapper">
+                            <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
+                            <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
+                        </div>
+                        <p id="icao-status"></p>
+                    </div>
+
+                    <div id="info-grid" class="info-grid hidden"></div>
+
+                    <div id="info-box" class="info-box hidden"></div>
+
+                    <div id="service-detail-box" class="service-info-display hidden">
+                        <h4 id="service-title"></h4>
+                        <div id="service-text"></div>
+                    </div>
+                    
+                    <div id="options-container" class="button-grid-main"></div>
+                    
+                    <div id="secondary-options-container" class="button-grid-secondary"></div>
+                </div>
+
+                <div id="result-area" class="hidden">
+                    <h2 class="result-header">Konklusjon</h2>
+                    <div id="result-box" class="result-message"></div>
+                    <div class="button-footer">
+                        <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button id="back-btn" class="btn-back hidden" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i> Gå tilbake
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="logikk.js"></script>
+</body>
+</html>
