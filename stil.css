@@ -1,88 +1,88 @@
-@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@400;700&display=swap');
 
 :root {
     --caa-blue: #1a427e;
     --caa-dark: #0d2b56;
-    --caa-bg: #f4f6f9;
-    --caa-text: #2c3e50;
-    --caa-success: #2e7d32;
+    --caa-bg: #f0f2f5;
+    --caa-text: #333;
+    --caa-success: #6A8E7F;
     --caa-highlight: #fff9c4;
-    --caa-contrast: #d32f2f;
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --caa-contrast: #e37575; /* Kontrastfarge for info */
+    --choice-bg: #eef4f8;
 }
 
-body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--caa-bg); color: var(--caa-text); line-height: 1.6; }
+body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--caa-bg); color: var(--caa-text); }
 
-/* NAVBAR */
-.navbar { width: 100%; background-color: var(--caa-blue); padding: 15px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 1000; }
-.navbar-wrapper { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.nav-logo { height: 50px; }
-.nav-title { color: white; font-size: 1.2rem; font-weight: 600; margin: 0; }
+/* NAVBAR ENDRINGER */
+.navbar { width: 100%; background-color: var(--caa-blue); padding: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
+.navbar-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
+.nav-logo { height: 60px; width: auto; }
+.nav-center { flex-grow: 1; text-align: center; }
+/* Mindre og mer profesjonell tittel */
+.nav-title { color: white; margin: 0; font-size: 1.2rem; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; }
+.nav-right { width: 100px; }
 
-/* CONTAINER & LAYOUT */
-.container { max-width: 800px; margin: 40px auto; padding: 0 20px; min-height: 80vh; }
+/* STEPS */
+.flow-steps-container { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 20px; gap: 15px; }
+.flow-step { display: flex; flex-direction: column; align-items: center; opacity: 0.4; transition: 0.3s; }
+.flow-step.active { opacity: 1; transform: scale(1.05); }
+.step-circle { width: 30px; height: 30px; background-color: var(--caa-blue); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+.flow-step span { font-size: 0.75rem; font-weight: bold; color: var(--caa-blue); }
+.flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.8rem; }
 
-/* GENERELLE KORT-STILER */
-.card, .content-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.05);
-}
+/* CONTAINER & KORT */
+.container { max-width: 900px; margin: 0 auto 40px auto; padding: 0 20px; }
+.question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
+h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 25px; font-size: 1.4rem; }
 
-/* STARTSIDE */
-.start-card { padding: 40px; text-align: center; }
-.start-header h2 { color: var(--caa-blue); margin-bottom: 5px; font-size: 2rem; }
-.start-header .subtitle { color: #666; font-size: 1.1rem; margin-top: 0; }
-.start-content { margin: 30px 0; text-align: left; }
-.start-list { list-style: none; padding: 0; margin: 20px 0; display: inline-block; width: 100%; }
-.start-list li { margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
-.start-list li i { color: var(--caa-success); }
+/* ICAO INPUT */
+#icao-search-container { margin: 0 auto 20px auto; text-align: center; max-width: 350px; }
+.icao-input-wrapper { position: relative; display: inline-block; width: 100%; }
+#icao-input { padding: 12px; font-size: 1.2rem; text-align: center; width: 150px; border: 2px solid #ccc; border-radius: 6px; text-transform: uppercase; transition: 0.3s; }
+#icao-input:focus { border-color: var(--caa-blue); outline: none; }
+#icao-valid-icon { position: absolute; right: 80px; top: 15px; color: var(--caa-success); font-size: 1.2rem; }
+#icao-status { margin-top: 10px; font-size: 0.9rem; font-weight: bold; min-height: 1.2em; }
 
-.alert-box {
-    background-color: #e3f2fd;
-    border-left: 4px solid var(--caa-blue);
-    padding: 15px;
-    border-radius: 4px;
-    font-size: 0.95rem;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
+/* NYE INFOBOKSER (Steg 1 & 3) */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+.info-card-modern { background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; border-radius: 4px; display: flex; align-items: flex-start; gap: 15px; font-size: 0.9rem; text-align: left; }
+.info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
+.info-icon { font-size: 1.5rem; color: rgba(0,0,0,0.3); flex-shrink: 0; margin-top: 2px; }
+.info-content h4 { margin: 0 0 5px 0; font-size: 1rem; color: #333; }
+.info-content p { margin: 0; color: #555; font-size: 0.85rem; line-height: 1.4; }
 
-.btn-start {
-    background-color: var(--caa-blue);
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(26, 66, 126, 0.3);
-}
-.btn-start:hover { background-color: var(--caa-dark); transform: translateY(-2px); }
-.last-updated { margin-top: 20px; font-size: 0.85rem; color: #888; border-top: 1px solid #eee; padding-top: 15px; display: inline-block; width: 100%; }
+/* LISTER OG TEKSTBOKSER */
+.info-box { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 6px; margin: 20px 0; font-size: 0.9rem; line-height: 1.6; text-align: left; max-height: 300px; overflow-y: auto; }
+.info-box ul { padding-left: 20px; margin: 0; }
+.info-box li { margin-bottom: 8px; }
+.service-info-display { background-color: #fff; border: 2px solid var(--caa-blue); padding: 20px; border-radius: 8px; margin: 20px 0; }
 
-/* WIZARD LAYOUT */
-.flow-steps-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 20px; }
-.flow-step { display: flex; flex-direction: column; align-items: center; opacity: 0.5; transition: 0.3s; }
-.flow-step.active { opacity: 1; font-weight: bold; color: var(--caa-blue); }
-.step-circle { width: 35px; height: 35px; background-color: #ddd; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 8px; transition: 0.3s; }
-.flow-step.active .step-circle { background-color: var(--caa-blue); transform: scale(1.1); }
-.flow-arrow { color: #ccc; font-size: 0.8rem; }
+/* KNAPPER & GRID LAYOUTS */
+.button-grid-main { display: grid; gap: 15px; margin-top: 20px; }
+/* Horisontal layout for knappene i steg 2 og 3 */
+.horizontal-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.vertical-grid { grid-template-columns: 1fr; }
 
-/* WIZARD INNHOLD */
-.content-card { padding: 0; }
-.card-header { padding: 30px 30px 20px 30px; border-bottom: 1px solid #f0f0f0; background-color: #fafafa; }
-.card-header h2 { margin: 0; color: var(--caa-blue); font-size: 1.5rem; }
-.card-body { padding: 30px; }
+.continue-button { background-color: var(--choice-bg); border: 2px solid #dae1e7; padding: 20px 15px; border-radius: 6px; text-align: center; cursor: pointer; font-weight: 600; transition: 0.2s; color: var(--caa-blue); font-size: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+.continue-button:hover { background-color: white; border-color: var(--caa-blue); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.continue-button i { margin-bottom: 10px; font-size: 1.5rem; }
 
-/* INPUTS (ICAO) */
-.icao-input-wrapper { display: flex; align-items: center; border: 2px solid #ddd; border-radius: 8px; overflow: hidden; max-width: 300px; margin: 0 auto 15px auto; transition: 0.2s; }
-.icao-input-wrapper:focus-within {
-  border-color: var(--caa-blue);
-  box-shadow: 0 0 0 3px rgba(26, 66, 126, 0.5);
+/* Sekundære knapper (Nei/Avbryt) */
+.button-grid-secondary { margin-top: 15px; }
+.btn-no { width: 100%; background-color: #fff; border: 2px solid #e0e0e0; color: #666; padding: 15px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-no:hover { background-color: #f5f5f5; border-color: #999; color: #333; }
+
+/* NAVIGASJON I BUNN */
+.card-footer { margin-top: 30px; display: flex; justify-content: flex-start; border-top: 1px solid #eee; padding-top: 20px; }
+.btn-back { background: none; border: none; color: #777; font-size: 0.9rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; padding: 10px 0; }
+.btn-back:hover { color: var(--caa-blue); }
+
+.btn-reset { background-color: var(--caa-blue); color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+.result-message { padding: 30px; background: #e8f5e9; border-radius: 8px; border-left: 6px solid var(--caa-success); color: #2e7d32; }
+.hidden { display: none !important; }
+
+@media (max-width: 600px) {
+    .horizontal-grid { grid-template-columns: 1fr; } /* Stack på mobil */
+    .info-grid { grid-template-columns: 1fr; }
+    .nav-title { font-size: 1rem; line-height: 1.2; }
 }
