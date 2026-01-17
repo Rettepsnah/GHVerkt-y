@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samsvarsvurdering (EU) 2025/20 - CAA Norway</title>
-    <link rel="stylesheet" href="stil.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
     <nav class="navbar">
         <div class="navbar-wrapper">
             <div class="nav-left">
-                <img src="logo.png.png" alt="CAA Norway" class="nav-logo">
+                <img src="logo.png" alt="CAA Norway" class="nav-logo">
             </div>
             <div class="nav-center">
                 <h1 class="nav-title">Felleseuropeisk regelverk for ground handling</h1>
@@ -22,37 +22,53 @@
     </nav>
 
     <main class="container">
-        <div class="flow-steps-container">
-            <div class="flow-step" id="step-indicator-easa_airport">
-                <div class="step-circle">1</div>
-                <span>Lufthavn</span>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-entity_type">
-                <div class="step-circle">2</div>
-                <span>Organisasjon</span>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-service_type">
-                <div class="step-circle">3</div>
-                <span>Tjenester</span>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-exemptions">
-                <div class="step-circle">4</div>
-                <span>Unntak</span>
-            </div>
-        </div>
-
+        
         <div class="card-wrapper">
-            <div id="quiz-card" class="question-card">
+            <div id="start-card" class="start-card">
+                <h2>Veileder for samsvarsvurdering (EU) 2025/20</h2>
+                <div class="start-content">
+                    <p class="start-text">
+                        Dette verktøyet hjelper deg å avklare om din organisasjon faller inn under kravene i forordning (EU) 2025/20. 
+                        Svar på spørsmålene steg for steg for å se om dere skal levere samsvarserklæring.
+                    </p>
+                    <button class="btn-start" onclick="startTool()">Start veileder</button>
+                    
+                    <div class="last-updated">
+                        Sist endret: 17.01.2026
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-card" class="question-card hidden">
                 
+                <div class="flow-steps-container">
+                    <div class="flow-step" id="step-indicator-easa_airport">
+                        <div class="step-circle">1</div>
+                        <span>Lufthavn</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="flow-step" id="step-indicator-entity_type">
+                        <div class="step-circle">2</div>
+                        <span>Organisasjon</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="flow-step" id="step-indicator-service_type">
+                        <div class="step-circle">3</div>
+                        <span>Tjenester</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div class="flow-step" id="step-indicator-exemptions">
+                        <div class="step-circle">4</div>
+                        <span>Unntak</span>
+                    </div>
+                </div>
+
                 <div id="question-content">
                     <h2 id="question-text">Laster spørsmål...</h2>
                     
                     <div id="icao-search-container" class="hidden">
-                        <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
-                        <div class="icao-input-wrapper">
+                        <label for="icao-input" style="display:block; margin-bottom:10px;">Skriv inn ICAO-kode (obligatorisk):</label>
+                        <div class="icao-row">
                             <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
                             <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
                         </div>
@@ -60,7 +76,6 @@
                     </div>
 
                     <div id="info-grid" class="info-grid hidden"></div>
-
                     <div id="info-box" class="info-box hidden"></div>
 
                     <div id="service-detail-box" class="service-info-display hidden">
@@ -69,7 +84,6 @@
                     </div>
                     
                     <div id="options-container" class="button-grid-main"></div>
-                    
                     <div id="secondary-options-container" class="button-grid-secondary"></div>
                 </div>
 
@@ -90,6 +104,6 @@
         </div>
     </main>
 
-    <script src="logikk.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
