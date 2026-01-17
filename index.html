@@ -22,62 +22,45 @@
     </nav>
 
     <main class="container">
-        
-        <div id="welcome-screen" class="card-box">
-            <h2 class="question-header">Velkommen til samsvarsvurdering</h2>
-            <div class="info-text" style="margin-bottom: 30px;">
-                <p>Dette verktøyet hjelper deg å vurdere om du omfattes av <strong>Forordning (EU) 2025/20</strong> angående felleseuropeisk regelverk for ground handling.</p>
-                <p>Verktøyet vil lede deg gjennom en stegvis prosess basert på lufthavn, selskapsform og tjenester.</p>
+        <div class="flow-steps-container">
+            <div class="flow-step" id="step-indicator-easa_airport">
+                <div class="step-circle">1</div>
+                <span>Lufthavn</span>
             </div>
-
-            <div class="last-updated-box">
-                <small>Sist oppdatert: <strong>18.01.2025</strong></small>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-entity_type">
+                <div class="step-circle">2</div>
+                <span>Organisasjon</span>
             </div>
-
-            <button onclick="startTool()" class="continue-button" style="width: 100%; justify-content: center;">
-                Start sjekken <i class="fas fa-arrow-right" style="margin-left: 10px; margin-bottom: 0;"></i>
-            </button>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-service_type">
+                <div class="step-circle">3</div>
+                <span>Tjenester</span>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-step" id="step-indicator-exemptions">
+                <div class="step-circle">4</div>
+                <span>Unntak</span>
+            </div>
         </div>
 
-        <div id="tool-container" class="hidden">
-            
-            <div class="flow-steps-container">
-                <div class="flow-step" id="step-indicator-easa_airport">
-                    <div class="step-circle">1</div>
-                    <span>Lufthavn</span>
-                </div>
-                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="flow-step" id="step-indicator-entity_type">
-                    <div class="step-circle">2</div>
-                    <span>Type</span>
-                </div>
-                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="flow-step" id="step-indicator-services">
-                    <div class="step-circle">3</div>
-                    <span>Tjenester</span>
-                </div>
-                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-                <div class="flow-step" id="step-indicator-exemptions">
-                    <div class="step-circle">4</div>
-                    <span>Unntak</span>
-                </div>
-            </div>
-
-            <div class="card-box">
+        <div class="card-wrapper">
+            <div id="quiz-card" class="question-card">
+                
                 <div id="question-content">
-                    <h2 id="question-title" class="question-header"></h2>
-                    <p id="question-text" class="question-text"></p>
+                    <h2 id="question-text">Laster spørsmål...</h2>
                     
-                    <div id="input-container" class="hidden">
+                    <div id="icao-search-container" class="hidden">
+                        <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
                         <div class="icao-input-wrapper">
-                            <input type="text" id="icao-input" placeholder="Skriv ICAO (f.eks ENGM) eller navn..." autocomplete="off">
-                            <span class="search-icon"><i class="fas fa-search"></i></span>
+                            <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
+                            <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
                         </div>
                         <p id="icao-status"></p>
-                        <div id="search-suggestions" class="hidden" style="margin-top:10px;"></div>
                     </div>
 
                     <div id="info-grid" class="info-grid hidden"></div>
+
                     <div id="info-box" class="info-box hidden"></div>
 
                     <div id="service-detail-box" class="service-info-display hidden">
@@ -86,6 +69,7 @@
                     </div>
                     
                     <div id="options-container" class="button-grid-main"></div>
+                    
                     <div id="secondary-options-container" class="button-grid-secondary"></div>
                 </div>
 
