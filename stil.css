@@ -35,6 +35,18 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 .question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
 h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 25px; font-size: 1.4rem; }
 
+/* NY STIL FOR START-SIDE */
+.last-updated-box {
+    background-color: var(--choice-bg);
+    border-left: 4px solid var(--caa-blue);
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    color: var(--caa-text);
+    font-size: 0.9rem;
+    display: inline-block;
+    width: auto;
+}
+
 /* ICAO INPUT */
 #icao-search-container { margin: 0 auto 20px auto; text-align: center; max-width: 350px; }
 .icao-input-wrapper { position: relative; display: inline-block; width: 100%; }

@@ -22,69 +22,93 @@
     </nav>
 
     <main class="container">
-        <div class="flow-steps-container">
-            <div class="flow-step" id="step-indicator-easa_airport">
-                <div class="step-circle">1</div>
-                <span>Lufthavn</span>
+        
+        <div id="welcome-screen" class="question-card">
+            <h2>Velkommen til samsvarsvurdering</h2>
+            
+            <div style="text-align: left; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6;">
+                <p>Dette verktøyet hjelper deg å vurdere om du omfattes av <strong>Forordning (EU) 2025/20</strong>.</p>
+                <p>Du vil bli guidet gjennom en stegvis prosess basert på:</p>
+                <ul style="margin-bottom: 20px;">
+                    <li>Hvilken lufthavn tjenesten leveres på</li>
+                    <li>Hvilken type organisasjon du representerer</li>
+                    <li>Hvilke tjenester som utføres</li>
+                </ul>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-entity_type">
-                <div class="step-circle">2</div>
-                <span>Organisasjon</span>
+
+            <div class="last-updated-box">
+                <i class="fas fa-calendar-alt"></i> Sist oppdatert: <strong>18.01.2025</strong>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-service_type">
-                <div class="step-circle">3</div>
-                <span>Tjenester</span>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
-            <div class="flow-step" id="step-indicator-exemptions">
-                <div class="step-circle">4</div>
-                <span>Unntak</span>
-            </div>
+
+            <button onclick="startTool()" class="continue-button" style="width: 100%; margin-top: 20px;">
+                Start verktøyet <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
         </div>
+        <div id="tool-container" class="hidden">
+            <div class="flow-steps-container">
+                <div class="flow-step" id="step-indicator-easa_airport">
+                    <div class="step-circle">1</div>
+                    <span>Lufthavn</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-entity_type">
+                    <div class="step-circle">2</div>
+                    <span>Organisasjon</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-service_type">
+                    <div class="step-circle">3</div>
+                    <span>Tjenester</span>
+                </div>
+                <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="flow-step" id="step-indicator-exemptions">
+                    <div class="step-circle">4</div>
+                    <span>Unntak</span>
+                </div>
+            </div>
 
-        <div class="card-wrapper">
-            <div id="quiz-card" class="question-card">
-                
-                <div id="question-content">
-                    <h2 id="question-text">Laster spørsmål...</h2>
+            <div class="card-wrapper">
+                <div id="quiz-card" class="question-card">
                     
-                    <div id="icao-search-container" class="hidden">
-                        <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
-                        <div class="icao-input-wrapper">
-                            <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
-                            <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
+                    <div id="question-content">
+                        <h2 id="question-text">Laster spørsmål...</h2>
+                        
+                        <div id="icao-search-container" class="hidden">
+                            <label for="icao-input">Skriv inn ICAO-kode (obligatorisk):</label>
+                            <div class="icao-input-wrapper">
+                                <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
+                                <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
+                            </div>
+                            <p id="icao-status"></p>
                         </div>
-                        <p id="icao-status"></p>
+
+                        <div id="info-grid" class="info-grid hidden"></div>
+
+                        <div id="info-box" class="info-box hidden"></div>
+
+                        <div id="service-detail-box" class="service-info-display hidden">
+                            <h4 id="service-title"></h4>
+                            <div id="service-text"></div>
+                        </div>
+                        
+                        <div id="options-container" class="button-grid-main"></div>
+                        
+                        <div id="secondary-options-container" class="button-grid-secondary"></div>
                     </div>
 
-                    <div id="info-grid" class="info-grid hidden"></div>
-
-                    <div id="info-box" class="info-box hidden"></div>
-
-                    <div id="service-detail-box" class="service-info-display hidden">
-                        <h4 id="service-title"></h4>
-                        <div id="service-text"></div>
+                    <div id="result-area" class="hidden">
+                        <h2 class="result-header">Konklusjon</h2>
+                        <div id="result-box" class="result-message"></div>
+                        <div class="button-footer">
+                            <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                        </div>
                     </div>
-                    
-                    <div id="options-container" class="button-grid-main"></div>
-                    
-                    <div id="secondary-options-container" class="button-grid-secondary"></div>
-                </div>
 
-                <div id="result-area" class="hidden">
-                    <h2 class="result-header">Konklusjon</h2>
-                    <div id="result-box" class="result-message"></div>
-                    <div class="button-footer">
-                        <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                    <div class="card-footer">
+                        <button id="back-btn" class="btn-back hidden" onclick="goBack()">
+                            <i class="fas fa-arrow-left"></i> Gå tilbake
+                        </button>
                     </div>
-                </div>
-
-                <div class="card-footer">
-                    <button id="back-btn" class="btn-back hidden" onclick="goBack()">
-                        <i class="fas fa-arrow-left"></i> Gå tilbake
-                    </button>
                 </div>
             </div>
         </div>

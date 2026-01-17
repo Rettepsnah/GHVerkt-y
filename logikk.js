@@ -147,6 +147,18 @@ const flow = [
 let stepHistory = [];
 let currentAirport = null;
 
+// --- NY FUNKSJON FOR Å STARTE VERKTØYET ---
+function startTool() {
+    document.getElementById('welcome-screen').classList.add('hidden');
+    document.getElementById('tool-container').classList.remove('hidden');
+    
+    // Reset input og start
+    const input = document.getElementById('icao-input');
+    if(input) input.value = "";
+    renderStep("easa_airport");
+}
+// -------------------------------------------
+
 function renderStep(stepId, isBack = false) {
     const step = flow.find(s => s.id === stepId);
     
@@ -358,10 +370,7 @@ function showResult(text) {
     document.getElementById('result-box').innerHTML = text;
 }
 
-// Start app
+// Start app - FJERNET AUTOMATISK START HER
 document.addEventListener('DOMContentLoaded', () => {
-    // Reset inputs
-    const input = document.getElementById('icao-input');
-    if(input) input.value = "";
-    renderStep("easa_airport");
+    // Vi gjør ingenting her nå, siden startTool() kalles ved knappetrykk
 });
