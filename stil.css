@@ -27,7 +27,7 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 .question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
 h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 25px; font-size: 1.4rem; }
 
-/* --- NY STIL FOR STARTSIDEN --- */
+/* --- STARTSIDEN --- */
 .welcome-card {
     text-align: center;
     padding: 60px 40px;
@@ -96,9 +96,8 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
     color: #999;
     font-size: 0.85rem;
 }
-/* ----------------------------- */
 
-/* STEPS (Original CSS) */
+/* STEPS */
 .flow-steps-container { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 20px; gap: 15px; }
 .flow-step { display: flex; flex-direction: column; align-items: center; opacity: 0.4; transition: 0.3s; }
 .flow-step.active { opacity: 1; transform: scale(1.05); }
@@ -106,18 +105,16 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
 .flow-step span { font-size: 0.75rem; font-weight: bold; color: var(--caa-blue); }
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.8rem; }
 
-/* ICAO INPUT - OPPDATERT: Ikon flyttet ut */
+/* ICAO INPUT */
 #icao-search-container { margin: 0 auto 20px auto; text-align: center; max-width: 350px; }
-
 .icao-input-wrapper { 
     position: relative; 
-    display: flex; /* Endret til flex for å legge elementer på rad */
+    display: flex; 
     align-items: center;
     justify-content: center;
-    gap: 15px; /* Avstand mellom input og ikon */
+    gap: 15px; 
     width: 100%; 
 }
-
 #icao-input { 
     padding: 12px; 
     font-size: 1.2rem; 
@@ -129,16 +126,14 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
     transition: 0.3s; 
 }
 #icao-input:focus { border-color: var(--caa-blue); outline: none; }
-
 #icao-valid-icon { 
-    position: static; /* Ikke lenger absolutt posisjonert */
+    position: static; 
     color: var(--caa-success); 
     font-size: 1.5rem; 
 }
-
 #icao-status { margin-top: 10px; font-size: 0.9rem; font-weight: bold; min-height: 1.2em; }
 
-/* NYE INFOBOKSER (Steg 1 & 3) */
+/* INFOBOKSER */
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
 .info-card-modern { background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; border-radius: 4px; display: flex; align-items: flex-start; gap: 15px; font-size: 0.9rem; text-align: left; }
 .info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
@@ -154,7 +149,6 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
 
 /* KNAPPER & GRID LAYOUTS */
 .button-grid-main { display: grid; gap: 15px; margin-top: 20px; }
-/* Horisontal layout for knappene i steg 2 og 3 */
 .horizontal-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 .vertical-grid { grid-template-columns: 1fr; }
 
@@ -162,7 +156,19 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
 .continue-button:hover { background-color: white; border-color: var(--caa-blue); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 .continue-button i { margin-bottom: 10px; font-size: 1.5rem; }
 
-/* Sekundære knapper (Nei/Avbryt) */
+/* NY STIL FOR VALGT KNAPP */
+.continue-button.selected {
+    background-color: var(--caa-blue);
+    color: white;
+    border-color: var(--caa-dark);
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+.continue-button.selected div {
+     color: white !important;
+}
+
+/* Sekundære knapper */
 .button-grid-secondary { margin-top: 15px; }
 .btn-no { width: 100%; background-color: #fff; border: 2px solid #e0e0e0; color: #666; padding: 15px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
 .btn-no:hover { background-color: #f5f5f5; border-color: #999; color: #333; }
@@ -177,7 +183,7 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
 .hidden { display: none !important; }
 
 @media (max-width: 600px) {
-    .horizontal-grid { grid-template-columns: 1fr; } /* Stack på mobil */
+    .horizontal-grid { grid-template-columns: 1fr; }
     .info-grid { grid-template-columns: 1fr; }
     .nav-title { font-size: 1rem; line-height: 1.2; }
 }

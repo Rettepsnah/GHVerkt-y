@@ -47,7 +47,7 @@ const airportDB = {
     "ENSK": { name: "Stokmarknes lufthavn", easa: true }
 };
 
-// Data for infobokser i Steg 1 - OPPDATERT TEKST
+// Data for infobokser i Steg 1
 const step1Info = `
     <div class="info-card-modern blue">
         <i class="fas fa-question-circle info-icon"></i>
@@ -73,6 +73,17 @@ const step1Info = `
             </ul>
             <p style="margin-top:10px;"><strong>Konsekvensen av unntaket:</strong><br>
             Hvis en flyplass unntas, slipper den de omfattende EASA-kravene, men må i stedet forholde seg til nasjonalt regelverk (i Norge ofte BSL E 1-1).</p>
+        </div>
+    </div>
+`;
+
+// NY: Data for infoboks i Steg 2
+const step2Info = `
+    <div class="info-card-modern blue" style="grid-column: span 2;">
+        <i class="fas fa-plane info-icon"></i>
+        <div class="info-content">
+            <h4>For flyselskaper (AOC)</h4>
+            <p>Regelverket gjelder kun for <strong>CAT-operasjoner</strong> med komplekse motordrevne luftfartøy. Helikopter er unntatt fra dette regelverket.</p>
         </div>
     </div>
 `;
@@ -112,20 +123,20 @@ const flow = [
         id: "easa_airport",
         question: "Leveres tjenesten på en EASA Lufthavn?",
         extraHtml: step1Info,
-        requireICAO: true, // Markør for obligatorisk sjekk
+        requireICAO: true, 
         options: [
             { text: "Gå videre", next: "entity_type", condition: "checkICAO" } 
         ]
-        // Note: Knappen genereres dynamisk basert på ICAO-validering
     },
     {
         id: "entity_type",
         question: "Hvilken organisasjon representerer du?",
-        layout: "horizontal", // Vannrett layout
+        layout: "horizontal",
+        extraHtml: step2Info, // La til infoboks her
         options: [
-            { text: "GHSP", sub: "Ground Handling Provider", next: "service_type" },
-            { text: "ADR", sub: "Lufthavnoperatør", next: "service_type" },
-            { text: "AOC", sub: "Flyselskap", next: "service_type" }
+            { text: "GHSP", sub: "Ground Handling Service Provider", next: "service_type" },
+            { text: "ADR", sub: "Lufthavnoperatør som også utfører ground handling", next: "service_type" },
+            { text: "AOC", sub: "Flyselskap som også utfører self-handling", next: "service_type" }
         ],
         secondaryOption: { text: "Ingen av disse", result: "Du er ikke omfattet av regelverket (EU) 2025/20." }
     },
@@ -159,24 +170,19 @@ const flow = [
 let stepHistory = [];
 let currentAirport = null;
 
-// --- NY FUNKSJON FOR Å STARTE VERKTØYET ---
 function startTool() {
     document.getElementById('welcome-screen').classList.add('hidden');
     document.getElementById('tool-container').classList.remove('hidden');
-    
-    // Reset input og start
     const input = document.getElementById('icao-input');
     if(input) input.value = "";
     renderStep("easa_airport");
 }
-// -------------------------------------------
 
 function renderStep(stepId, isBack = false) {
     const step = flow.find(s => s.id === stepId);
     
     // Håndter historikk
     if (!isBack && stepHistory.length > 0 && stepHistory[stepHistory.length - 1] !== stepId) {
-        // Legg til i historikk hvis vi går fremover
         if (!stepHistory.includes(stepId)) stepHistory.push(stepId); 
     } else if (stepHistory.length === 0) {
         stepHistory.push(stepId);
@@ -191,7 +197,7 @@ function renderStep(stepId, isBack = false) {
     const backBtn = document.getElementById('back-btn');
     if (stepId === "easa_airport") {
         backBtn.classList.add('hidden');
-        stepHistory = ["easa_airport"]; // Reset historikk ved start
+        stepHistory = ["easa_airport"]; 
     } else {
         backBtn.classList.remove('hidden');
     }
@@ -206,15 +212,13 @@ function renderStep(stepId, isBack = false) {
 
     document.getElementById('question-text').innerText = step.question;
     
-    // Spesialhåndtering for Steg 1 (ICAO)
     if (stepId === "easa_airport") {
         icaoContainer.classList.remove('hidden');
-        setupICAOListener(container); // Send container for å oppdatere knapp
+        setupICAOListener(container); 
     } else {
         icaoContainer.classList.add('hidden');
     }
 
-    // Vis ekstra HTML (Infobokser)
     if (step.extraHtml) {
         infoGrid.innerHTML = step.extraHtml;
         infoGrid.classList.remove('hidden');
@@ -222,7 +226,6 @@ function renderStep(stepId, isBack = false) {
         infoGrid.classList.add('hidden');
     }
 
-    // Vis tekstboks (Unntaksliste)
     if (step.infoContent) {
         infoBox.innerHTML = step.infoContent;
         infoBox.classList.remove('hidden');
@@ -234,7 +237,6 @@ function renderStep(stepId, isBack = false) {
     container.innerHTML = '';
     secondaryContainer.innerHTML = '';
 
-    // Sett grid-klasse basert på layout
     if (step.layout === "horizontal") {
         container.className = "button-grid-main horizontal-grid";
     } else {
@@ -242,7 +244,6 @@ function renderStep(stepId, isBack = false) {
     }
 
     // Generer hovedknapper
-    // For Steg 1, genererer vi knappen manuelt via setupICAOListener for validering
     if (stepId !== "easa_airport") {
         step.options.forEach(opt => {
             const btn = document.createElement('button');
@@ -257,7 +258,35 @@ function renderStep(stepId, isBack = false) {
             
             btn.onclick = () => {
                 if (opt.isService) {
-                    handleServiceClick(opt, secondaryContainer); // Vis bekreftelse nede
+                    handleServiceClick(opt, secondaryContainer);
+                } else if (stepId === "entity_type") {
+                    // NY LOGIKK FOR STEG 2: Markering + "Gå videre"-knapp
+                    
+                    // Fjern markering fra andre knapper
+                    container.querySelectorAll('.continue-button').forEach(b => b.classList.remove('selected'));
+                    // Marker denne knappen
+                    btn.classList.add('selected');
+
+                    // Fjern gammel "Gå videre"-knapp hvis den finnes
+                    const oldBtn = document.getElementById('next-step-btn');
+                    if(oldBtn) oldBtn.remove();
+
+                    // Lag ny "Gå videre"-knapp
+                    const nextBtn = document.createElement('button');
+                    nextBtn.id = 'next-step-btn';
+                    nextBtn.className = 'btn-reset';
+                    nextBtn.style.width = "100%";
+                    nextBtn.style.marginTop = "20px";
+                    nextBtn.style.marginBottom = "20px";
+                    nextBtn.innerHTML = `Gå videre <i class="fas fa-arrow-right"></i>`;
+                    nextBtn.onclick = () => {
+                         stepHistory.push(opt.next);
+                         renderStep(opt.next);
+                    };
+                    
+                    // Legg til knappen før "Ingen av disse" i sekundær-containeren
+                    secondaryContainer.insertBefore(nextBtn, secondaryContainer.firstChild);
+
                 } else if (opt.result) {
                     showResult(opt.result);
                 } else {
@@ -269,7 +298,6 @@ function renderStep(stepId, isBack = false) {
         });
     }
 
-    // Generer sekundærknapp ("Nei" / "Ingen av disse")
     if (step.secondaryOption) {
         const noBtn = document.createElement('button');
         noBtn.className = 'btn-no';
@@ -281,8 +309,8 @@ function renderStep(stepId, isBack = false) {
 
 function goBack() {
     if (stepHistory.length > 1) {
-        stepHistory.pop(); // Fjern nåværende
-        const prevStep = stepHistory[stepHistory.length - 1]; // Hent forrige
+        stepHistory.pop();
+        const prevStep = stepHistory[stepHistory.length - 1]; 
         renderStep(prevStep, true);
     }
 }
@@ -292,13 +320,12 @@ function setupICAOListener(buttonContainer) {
     const status = document.getElementById('icao-status');
     const validIcon = document.getElementById('icao-valid-icon');
     
-    // Funksjon for å lage/oppdatere "Videre"-knappen
     const updateButton = (isValid) => {
-        buttonContainer.innerHTML = ''; // Tøm container
+        buttonContainer.innerHTML = ''; 
         if (isValid) {
             const btn = document.createElement('button');
             btn.className = 'continue-button';
-            btn.style.width = "100%"; // Full bredde i Steg 1
+            btn.style.width = "100%"; 
             btn.style.backgroundColor = "#e8f5e9";
             btn.style.borderColor = "#6A8E7F";
             btn.innerHTML = `<strong>Gå videre</strong><br><span style='font-size:0.8rem'>Lufthavn godkjent</span>`;
@@ -307,12 +334,9 @@ function setupICAOListener(buttonContainer) {
                 renderStep("entity_type");
             };
             buttonContainer.appendChild(btn);
-        } else {
-            // Vi viser ingen knapp hvis ICAO ikke er gyldig (obligatorisk)
         }
     };
 
-    // Sjekk ved lasting hvis det allerede står noe der (fra back button)
     if(input.value.length === 4 && airportDB[input.value.toUpperCase()]) {
          const airport = airportDB[input.value.toUpperCase()];
          if(airport.easa) updateButton(true);
@@ -352,11 +376,9 @@ function handleServiceClick(option, secondaryContainer) {
     serviceBox.classList.remove('hidden');
     serviceBox.innerHTML = `<h4>${option.text}</h4><p>Juridisk ref: ${option.legal}</p>`;
     
-    // Fjern eksisterende bekreftelse hvis den finnes
     const oldBtn = document.getElementById('confirm-btn');
     if (oldBtn) oldBtn.remove();
 
-    // Legg til bekreftelsesknapp over "Ingen av disse"
     const confirmBtn = document.createElement('button');
     confirmBtn.id = 'confirm-btn';
     confirmBtn.className = 'btn-reset';
@@ -368,13 +390,12 @@ function handleServiceClick(option, secondaryContainer) {
         renderStep("exemptions");
     };
     
-    // Sett inn før "Nei"-knappen i den sekundære containeren
     secondaryContainer.insertBefore(confirmBtn, secondaryContainer.firstChild);
 }
 
 function showResult(text) {
     document.getElementById('question-content').classList.add('hidden');
-    document.getElementById('back-btn').classList.add('hidden'); // Skjul tilbake-knapp på resultat
+    document.getElementById('back-btn').classList.add('hidden');
     document.querySelectorAll('.flow-step').forEach(el => el.classList.remove('active'));
     
     const resultArea = document.getElementById('result-area');
@@ -382,7 +403,6 @@ function showResult(text) {
     document.getElementById('result-box').innerHTML = text;
 }
 
-// Start app - FJERNET AUTOMATISK START HER
 document.addEventListener('DOMContentLoaded', () => {
-    // Vi gjør ingenting her nå, siden startTool() kalles ved knappetrykk
+    // startTool() kalles fra HTML
 });
