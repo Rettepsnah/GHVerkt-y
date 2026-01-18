@@ -127,10 +127,67 @@ h2 {
 
 /* INFOBOKSER */
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-.info-card-modern { background-color: #fff3e0; border-left: 5px solid #ff9800; padding: 20px; border-radius: 6px; display: flex; align-items: flex-start; gap: 15px; font-size: 0.95rem; text-align: left; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+
+/* Generell stil for infokort */
+.info-card-modern { 
+    background-color: #fff3e0; 
+    border-left: 5px solid #ff9800; 
+    padding: 20px; 
+    border-radius: 6px; 
+    font-size: 0.95rem; 
+    text-align: left; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+    display: flex;
+    flex-direction: column; /* Endret til column for å støtte ekspandering */
+}
+
+/* Stiler for utvidbare bokser */
+.info-card-modern.expandable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.info-card-modern.expandable:hover {
+    background-color: #fff8e1; /* Lysere hover-farge for oransje */
+}
+.info-card-modern.blue.expandable:hover {
+    background-color: #f1f8fe; /* Lysere hover-farge for blå */
+}
+
+/* Header raden (Ikon + Tittel + Pil) */
+.info-header-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Innholdet som skjules/vises */
+.info-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s;
+    display: none; /* Skjult som standard */
+}
+
+/* Klasse som legges til via JS når den er åpen */
+.info-card-modern.open .info-details {
+    display: block;
+}
+
+/* Pilen som roterer */
+.toggle-icon {
+    margin-left: auto;
+    transition: transform 0.3s;
+    opacity: 0.6;
+}
+.info-card-modern.open .toggle-icon {
+    transform: rotate(180deg);
+}
+
 .info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
-.info-icon { font-size: 1.6rem; color: rgba(0,0,0,0.3); flex-shrink: 0; margin-top: 3px; }
-.info-content h4 { margin: 0 0 8px 0; font-size: 1.1rem; color: #333; font-weight: 700; }
+.info-icon { font-size: 1.6rem; color: rgba(0,0,0,0.3); flex-shrink: 0; }
+.info-content h4 { margin: 0; font-size: 1.1rem; color: #333; font-weight: 700; } /* Fjernet margin-bottom her siden den ligger i header-row */
 .info-content p { margin: 0; color: #555; line-height: 1.5; }
 
 /* LISTER OG TEKSTBOKSER */
@@ -176,7 +233,7 @@ h2 {
     border-color: var(--caa-blue);
     background-color: #f0f7ff;
     color: var(--caa-blue);
-    border-style: solid; /* Solid kant ved hover/valg for bedre synlighet */
+    border-style: solid; 
 }
 
 /* Sekundære knapper */
@@ -192,6 +249,9 @@ h2 {
 .btn-reset { background-color: var(--caa-blue); color: white; border: none; padding: 15px 35px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 1.1rem; }
 .result-message { padding: 30px; background: #e8f5e9; border-radius: 8px; border-left: 6px solid var(--caa-success); color: #2e7d32; }
 .hidden { display: none !important; }
+
+/* Animasjon for fade in */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 600px) {
     .horizontal-grid { grid-template-columns: 1fr; }

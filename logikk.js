@@ -47,30 +47,45 @@ const airportDB = {
     "ENSK": { name: "Stokmarknes lufthavn", easa: true }
 };
 
-// Data for infobokser i Steg 1
+// Data for infobokser i Steg 1 - ENDRET FOR Å VÆRE EKSANDERBARE
 const step1Info = `
-    <div class="info-card-modern blue">
-        <i class="fas fa-question-circle info-icon"></i>
-        <div class="info-content">
-            <h4>Hva er en EASA-lufthavn?</h4>
-            <p>En EASA-lufthavn er en flyplass som oppfyller felleseuropeiske krav til utforming og drift (sertifisering). For at en flyplass i det hele tatt skal falle inn under dette regelverket (Basisforordning 2018/1139 Art. 2.1.e), må den oppfylle alle disse kriteriene:</p>
-            <ul style="margin-top:10px; margin-bottom:10px; padding-left:20px;">
-                <li>Den er åpen for offentlig bruk (public use).</li>
-                <li>Den betjener kommersiell luftfart (rute-, charter- eller fraktflyging).</li>
-                <li>Den har en asfaltert/dekket instrumentrullebane på 800 meter eller mer (eller betjener helikoptre med instrumentprosedyrer).</li>
-            </ul>
-            <p>Hvis en flyplass ikke oppfyller disse (f.eks. kun har gressbane eller er stengt for kommersiell trafikk), er den uansett en nasjonal lufthavn.</p>
+    <div class="info-card-modern blue expandable" onclick="toggleInfo(this)">
+        <div class="info-header-row">
+            <i class="fas fa-question-circle info-icon"></i>
+            <div class="info-content">
+                <h4>Hva er en EASA-lufthavn?</h4>
+            </div>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="info-details">
+            <div class="info-content">
+                <p>En EASA-lufthavn er en flyplass som oppfyller felleseuropeiske krav til utforming og drift (sertifisering). For at en flyplass i det hele tatt skal falle inn under dette regelverket (Basisforordning 2018/1139 Art. 2.1.e), må den oppfylle alle disse kriteriene:</p>
+                <ul style="margin-top:10px; margin-bottom:10px; padding-left:20px;">
+                    <li>Den er åpen for offentlig bruk (public use).</li>
+                    <li>Den betjener kommersiell luftfart (rute-, charter- eller fraktflyging).</li>
+                    <li>Den har en asfaltert/dekket instrumentrullebane på 800 meter eller mer (eller betjener helikoptre med instrumentprosedyrer).</li>
+                </ul>
+                <p>Hvis en flyplass ikke oppfyller disse (f.eks. kun har gressbane eller er stengt for kommersiell trafikk), er den uansett en nasjonal lufthavn.</p>
+            </div>
         </div>
     </div>
-    <div class="info-card-modern">
-        <i class="fas fa-exclamation-circle info-icon"></i>
-        <div class="info-content">
-            <h4>Lufthavner som er unntatt</h4>
-            <p>Selv om en flyplass oppfyller kriteriene over (f.eks. 900 meter asfalt og rutetrafikk), gir artikkel 2.7 i forordningen Norge (ved Luftfartstilsynet) en rett til å unnta flyplassen fra EASA-reglene dersom den har:</p>
-            <ul style="margin-top:5px; margin-bottom:5px; padding-left:20px;">
-                <li>Under 10 000 passasjerer i året, og</li>
-                <li>Under 850 fraktbevegelser i året.</li>
-            </ul>
+
+    <div class="info-card-modern expandable" onclick="toggleInfo(this)">
+        <div class="info-header-row">
+            <i class="fas fa-exclamation-circle info-icon"></i>
+            <div class="info-content">
+                <h4>Lufthavner som er unntatt</h4>
+            </div>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="info-details">
+            <div class="info-content">
+                <p>Selv om en flyplass oppfyller kriteriene over (f.eks. 900 meter asfalt og rutetrafikk), gir artikkel 2.7 i forordningen Norge (ved Luftfartstilsynet) en rett til å unnta flyplassen fra EASA-reglene dersom den har:</p>
+                <ul style="margin-top:5px; margin-bottom:5px; padding-left:20px;">
+                    <li>Under 10 000 passasjerer i året, og</li>
+                    <li>Under 850 fraktbevegelser i året.</li>
+                </ul>
+            </div>
         </div>
     </div>
 `;
@@ -136,12 +151,9 @@ const flow = [
     },
     {
         id: "exemptions",
-        // ENDRET SPØRSMÅL STEG 4
         question: "Unntatt regelverket - Utfører du utelukkende noen av disse tjenestene?",
-        // ENDRET HEADER STEG 4
         extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
         layout: "vertical", 
-        // NYE ALTERNATIVER SOM STIPLEDE BOKSER
         options: [
             { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
             { text: "(b) Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
@@ -154,7 +166,6 @@ const flow = [
             { text: "(i) Self-handling for ikke-kommersielle eller små fly", type: "dashed", action: "confirm_exempt" },
             { text: "(j) Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)", type: "dashed", action: "confirm_exempt" }
         ],
-        // NEI-KNAPPEN GIR NÅ OMFATTET-RESULTAT
         secondaryOption: { 
             text: "Nei", 
             result: "<strong>KONKLUSJON:</strong> Du skal levere inn samsvarserklæring iht. (EU) 2025/20." 
@@ -263,7 +274,6 @@ function renderStep(stepId, isBack = false) {
                     handleServiceClick(opt, secondaryContainer);
                 } 
                 else if (opt.action === "confirm_exempt") {
-                    // NY HÅNDTERING FOR STEG 4
                     handleExemptionClick(opt, secondaryContainer);
                 }
                 else if (stepId === "entity_type") {
@@ -392,7 +402,6 @@ function handleServiceClick(option, secondaryContainer) {
     secondaryContainer.insertBefore(confirmBtn, secondaryContainer.firstChild);
 }
 
-// NY FUNKSJON FOR STEG 4
 function handleExemptionClick(option, secondaryContainer) {
     const oldBtn = document.getElementById('confirm-btn');
     if (oldBtn) oldBtn.remove();
@@ -402,12 +411,11 @@ function handleExemptionClick(option, secondaryContainer) {
     confirmBtn.className = 'btn-reset';
     confirmBtn.style.width = "100%";
     confirmBtn.style.marginBottom = "15px";
-    confirmBtn.innerText = "Gå videre"; // Generisk tekst som bedt om
+    confirmBtn.innerText = "Gå videre"; 
     confirmBtn.onclick = () => {
         showResult("Du er <strong>unntatt</strong> regelverket og trenger ikke sende samsvarserklæring.");
     };
     
-    // Sett inn før "Nei"-knappen
     secondaryContainer.insertBefore(confirmBtn, secondaryContainer.firstChild);
 }
 
@@ -419,6 +427,11 @@ function showResult(text) {
     const resultArea = document.getElementById('result-area');
     resultArea.classList.remove('hidden');
     document.getElementById('result-box').innerHTML = text;
+}
+
+// NY FUNKSJON FOR Å TOGGLE INFOBOKSER
+function toggleInfo(element) {
+    element.classList.toggle('open');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
