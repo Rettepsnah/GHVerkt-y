@@ -47,7 +47,7 @@ const airportDB = {
     "ENSK": { name: "Stokmarknes lufthavn", easa: true }
 };
 
-// Data for infobokser i Steg 1 - ENDRET: Fjernet expand, alltid åpne
+// Data for infobokser i Steg 1
 const step1Info = `
     <div class="info-card-modern blue">
         <div class="info-header-row">
@@ -141,8 +141,8 @@ const flow = [
     },
     {
         id: "exemptions",
-        // ENDRET: Ny tittel, fjernet "Scope" header
         question: "Noen tjenester og aktiviteter er unntatt - Er noen av disse aktuelle for deg?",
+        extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
         layout: "grid",
         options: [
             { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
@@ -177,19 +177,8 @@ function startTool() {
     document.getElementById('tool-container').classList.remove('hidden');
     const input = document.getElementById('icao-input');
     if(input) input.value = "";
-    populateAirportList(); 
+    // Fjernet populateAirportList da vi ikke bruker datalist lenger
     renderStep("easa_airport");
-}
-
-function populateAirportList() {
-    const dataList = document.getElementById('airport-list');
-    dataList.innerHTML = '';
-    for (const [icao, data] of Object.entries(airportDB)) {
-        const option = document.createElement('option');
-        option.value = icao;
-        option.label = data.name;
-        dataList.appendChild(option);
-    }
 }
 
 function renderStep(stepId, isBack = false) {
@@ -366,14 +355,13 @@ function setupICAOListener(buttonContainer) {
     const updateButton = (isValid, airportName) => {
         buttonContainer.innerHTML = ''; 
         if (isValid) {
+            // ENDRET: Ny "Gå videre" knapp i blå stil
             const btn = document.createElement('button');
-            btn.className = 'continue-button';
+            btn.className = 'btn-reset'; // Bruker standard blå stil
             btn.style.width = "100%"; 
-            btn.style.backgroundColor = "#e8f5e9";
-            btn.style.borderColor = "#6A8E7F";
-            btn.innerHTML = `<strong>Gå videre</strong>`;
+            btn.innerHTML = `Gå videre <i class="fas fa-arrow-right"></i>`;
             btn.onclick = () => {
-                userChoices.airport = airportName || (input.value.toUpperCase() + " (Manuelt bekreftet)");
+                userChoices.airport = airportName || (input.value.toUpperCase());
                 stepHistory.push("entity_type");
                 renderStep("entity_type");
             };
@@ -381,73 +369,43 @@ function setupICAOListener(buttonContainer) {
         }
     };
 
-    const showManualButton = () => {
-        buttonContainer.innerHTML = '';
-        const manBtn = document.createElement('button');
-        manBtn.className = 'btn-manual-confirm';
-        manBtn.innerHTML = "Jeg bekrefter at dette er en EASA-lufthavn";
-        manBtn.onclick = () => {
-            status.innerHTML = `<span style="color:#856404">Manuelt bekreftet.</span>`;
-            updateButton(true, input.value + " (Manuelt bekreftet)");
-        };
-        buttonContainer.appendChild(manBtn);
-    };
-
     const checkInput = () => {
         const val = input.value.toUpperCase();
         
-        // Sjekk om input er tom
-        if (val.length < 2) {
-             status.innerText = ""; 
-             validIcon.classList.add('hidden');
-             updateButton(false);
-             return;
-        }
-
-        // 1. Sjekk ICAO kode (eksakt match)
-        let airport = airportDB[val];
-
-        // 2. Hvis ikke ICAO, sjekk navn (om input matcher deler av navnet i DB)
-        if (!airport) {
-            for (const key in airportDB) {
-                if (airportDB[key].name.toUpperCase() === val) {
-                    airport = airportDB[key];
-                    airport.icao = key; // lagre koden midlertidig
-                    break;
+        if (val.length === 4) {
+            const airport = airportDB[val];
+            if (airport) {
+                if (airport.easa) {
+                    // ENDRET: Visning med pil og navn i blå farge
+                    status.innerHTML = `
+                        <div class="icao-result-container">
+                            <i class="fas fa-arrow-down icao-arrow"></i>
+                            <div class="icao-name">${airport.name}</div>
+                        </div>
+                    `;
+                    validIcon.classList.remove('hidden');
+                    updateButton(true, `${airport.name} (${val})`);
+                } else {
+                    status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
+                    status.style.color = "#d9534f";
+                    validIcon.classList.add('hidden');
+                    updateButton(false);
                 }
-            }
-        }
-
-        if (airport) {
-            if (airport.easa) {
-                const code = airport.icao || val;
-                status.innerHTML = `<span style="color:var(--caa-blue)">${airport.name}</span> (${code}) er en EASA-lufthavn.`;
-                validIcon.classList.remove('hidden');
-                updateButton(true, `${airport.name} (${code})`);
-            } else {
-                status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
-                status.style.color = "#d9534f";
+            } else { 
+                status.innerText = "Ukjent ICAO-kode."; 
+                status.style.color = "#d9534f"; 
                 validIcon.classList.add('hidden');
                 updateButton(false);
             }
         } else { 
-            // Ukjent input
-            if(val.length >= 4) {
-                status.innerText = "Ukjent lufthavn/kode."; 
-                status.style.color = "#d9534f"; 
-                validIcon.classList.add('hidden');
-                showManualButton();
-            } else {
-                status.innerText = "";
-                validIcon.classList.add('hidden');
-                updateButton(false);
-            }
+            status.innerText = ""; 
+            validIcon.classList.add('hidden');
+            updateButton(false);
         }
     };
 
     input.oninput = checkInput;
-    // Kjør sjekk med en gang i tilfelle nettleser autofyller
-    if(input.value.length > 0) checkInput();
+    if(input.value.length === 4) checkInput();
 }
 
 function handleServiceClick(option, secondaryContainer) {
@@ -463,7 +421,8 @@ function handleServiceClick(option, secondaryContainer) {
     confirmBtn.className = 'btn-reset';
     confirmBtn.style.width = "100%";
     confirmBtn.style.marginBottom = "15px";
-    confirmBtn.innerText = "Bekreft valg: " + option.text;
+    // ENDRET: Knappetekst til "Gå videre"
+    confirmBtn.innerText = "Gå videre";
     confirmBtn.onclick = () => {
         userChoices.service = option.text;
         stepHistory.push("exemptions");
@@ -510,8 +469,6 @@ function showResult(text) {
         <div class="summary-item"><span class="summary-label">Unntak:</span> <span>${userChoices.exempt}</span></div>
     `;
 }
-
-// Fjernet toggleInfo funksjonen da boksene nå er statiske
 
 document.addEventListener('DOMContentLoaded', () => {
     // startTool() kalles fra HTML
