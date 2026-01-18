@@ -48,7 +48,6 @@ const airportDB = {
 };
 
 // Data for infobokser i Steg 1
-// ENDRET TEKST I ORANSJE BOKS
 const step1Info = `
     <div class="info-card-modern blue">
         <i class="fas fa-question-circle info-icon"></i>
@@ -98,24 +97,6 @@ const step3Info = `
     </div>
 `;
 
-// Liste over unntak (Steg 4)
-const exemptionsList = `
-    <h4>Følgende aktiviteter er unntatt regelverket:</h4>
-    <ul>
-        <li>(a) Marshalling of aircraft</li>
-        <li>(b) Flight dispatch tasks (Regulation (EU) No 965/2012)</li>
-        <li>(c) Load control tasks (load planning, mass and balance, etc.)</li>
-        <li>(d) Ground supervision</li>
-        <li>(e) Oil handling for the aircraft (utført av vedlikeholdsorganisasjon)</li>
-        <li>(f) Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon)</li>
-        <li>(g) Andre bakketjenester utført i forbindelse med vedlikehold</li>
-        <li>(h) Transport av passasjerer og crew (hvis dette er eneste tjeneste)</li>
-        <li>(i) Self-handling for ikke-kommersielle eller små fly</li>
-        <li>(j) Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)</li>
-    </ul>
-    <p><strong>Fall ditt arbeid inn under noen av punktene over?</strong></p>
-`;
-
 // Konfigurasjon av stegene
 const flow = [
     {
@@ -155,13 +136,29 @@ const flow = [
     },
     {
         id: "exemptions",
-        question: "Er aktiviteten unntatt regelverket?",
-        infoContent: exemptionsList,
-        layout: "horizontal",
+        // ENDRET SPØRSMÅL STEG 4
+        question: "Unntatt regelverket - Utfører du utelukkende noen av disse tjenestene?",
+        // ENDRET HEADER STEG 4
+        extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
+        layout: "vertical", 
+        // NYE ALTERNATIVER SOM STIPLEDE BOKSER
         options: [
-            { text: "Ja", sub: "Vi er unntatt", result: "Du er <strong>unntatt</strong> regelverket og trenger ikke sende samsvarserklæring." },
-            { text: "Nei", sub: "Ikke unntatt", result: "<strong>KONKLUSJON:</strong> Du skal levere inn samsvarserklæring iht. (EU) 2025/20.", isFinal: true }
-        ]
+            { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
+            { text: "(b) Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
+            { text: "(c) Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
+            { text: "(d) Ground supervision", type: "dashed", action: "confirm_exempt" },
+            { text: "(e) Oil handling for the aircraft (utført av vedlikeholdsorganisasjon)", type: "dashed", action: "confirm_exempt" },
+            { text: "(f) Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon)", type: "dashed", action: "confirm_exempt" },
+            { text: "(g) Andre bakketjenester utført i forbindelse med vedlikehold", type: "dashed", action: "confirm_exempt" },
+            { text: "(h) Transport av passasjerer og crew (hvis dette er eneste tjeneste)", type: "dashed", action: "confirm_exempt" },
+            { text: "(i) Self-handling for ikke-kommersielle eller små fly", type: "dashed", action: "confirm_exempt" },
+            { text: "(j) Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)", type: "dashed", action: "confirm_exempt" }
+        ],
+        // NEI-KNAPPEN GIR NÅ OMFATTET-RESULTAT
+        secondaryOption: { 
+            text: "Nei", 
+            result: "<strong>KONKLUSJON:</strong> Du skal levere inn samsvarserklæring iht. (EU) 2025/20." 
+        }
     }
 ];
 
@@ -246,7 +243,13 @@ function renderStep(stepId, isBack = false) {
     if (stepId !== "easa_airport") {
         step.options.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'continue-button';
+            
+            // Sjekk om det er en stiplet knapp (Steg 4)
+            if (opt.type === "dashed") {
+                btn.className = 'dashed-btn';
+            } else {
+                btn.className = 'continue-button';
+            }
             
             let html = "";
             if (opt.icon) html += `<i class="fas ${opt.icon}"></i>`;
@@ -258,8 +261,12 @@ function renderStep(stepId, isBack = false) {
             btn.onclick = () => {
                 if (opt.isService) {
                     handleServiceClick(opt, secondaryContainer);
-                } else if (stepId === "entity_type") {
-                    
+                } 
+                else if (opt.action === "confirm_exempt") {
+                    // NY HÅNDTERING FOR STEG 4
+                    handleExemptionClick(opt, secondaryContainer);
+                }
+                else if (stepId === "entity_type") {
                     container.querySelectorAll('.continue-button').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
 
@@ -277,7 +284,6 @@ function renderStep(stepId, isBack = false) {
                          stepHistory.push(opt.next);
                          renderStep(opt.next);
                     };
-                    
                     secondaryContainer.insertBefore(nextBtn, secondaryContainer.firstChild);
 
                 } else if (opt.result) {
@@ -313,7 +319,6 @@ function setupICAOListener(buttonContainer) {
     const status = document.getElementById('icao-status');
     const validIcon = document.getElementById('icao-valid-icon');
     
-    // ENDRET: Forenklet tekst på knappen
     const updateButton = (isValid) => {
         buttonContainer.innerHTML = ''; 
         if (isValid) {
@@ -384,6 +389,25 @@ function handleServiceClick(option, secondaryContainer) {
         renderStep("exemptions");
     };
     
+    secondaryContainer.insertBefore(confirmBtn, secondaryContainer.firstChild);
+}
+
+// NY FUNKSJON FOR STEG 4
+function handleExemptionClick(option, secondaryContainer) {
+    const oldBtn = document.getElementById('confirm-btn');
+    if (oldBtn) oldBtn.remove();
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.id = 'confirm-btn';
+    confirmBtn.className = 'btn-reset';
+    confirmBtn.style.width = "100%";
+    confirmBtn.style.marginBottom = "15px";
+    confirmBtn.innerText = "Gå videre"; // Generisk tekst som bedt om
+    confirmBtn.onclick = () => {
+        showResult("Du er <strong>unntatt</strong> regelverket og trenger ikke sende samsvarserklæring.");
+    };
+    
+    // Sett inn før "Nei"-knappen
     secondaryContainer.insertBefore(confirmBtn, secondaryContainer.firstChild);
 }
 

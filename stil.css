@@ -16,12 +16,8 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 /* NAVBAR */
 .navbar { width: 100%; background-color: var(--caa-blue); padding: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
 .navbar-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
-
-/* ENDRET: Økt størrelse på logo for bedre proporsjonalitet */
 .nav-logo { height: 80px; width: auto; }
-
 .nav-center { flex-grow: 1; text-align: center; }
-
 .nav-title { 
     color: white; 
     margin: 0; 
@@ -58,41 +54,33 @@ h2 {
 .welcome-icon { font-size: 3rem; color: var(--caa-blue); margin-bottom: 20px; opacity: 0.9; }
 .welcome-card h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
 .lead-text { font-size: 1.2rem; color: #555; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
-
-/* ENDRET: Midtstiller innholdet i boksen */
 .welcome-content { 
     background-color: #fafafa; 
     display: inline-block; 
     padding: 20px 40px; 
     border-radius: 8px; 
-    text-align: center; /* Sentrerer teksten */
+    text-align: center; 
     margin-bottom: 30px; 
     border: 1px solid #eee; 
 }
-
-/* ENDRET: Midtstiller listen */
 .clean-list { 
     list-style: none; 
     padding: 0; 
     margin-top: 15px; 
     display: flex;
     flex-direction: column;
-    align-items: center; /* Sentrerer elementene */
+    align-items: center; 
 }
-
 .clean-list li { margin-bottom: 10px; display: flex; align-items: center; font-weight: 600; color: var(--caa-dark); }
 .clean-list li i { width: 30px; color: var(--caa-blue); opacity: 0.7; }
 
 .btn-start { width: 100%; max-width: 300px; margin: 0 auto; justify-content: center; background-color: var(--caa-blue); color: white; border: 2px solid var(--caa-blue); }
-
-/* ENDRET: Hover-effekt med hvit bakgrunn og blå tekst */
 .btn-start:hover { 
     background-color: white; 
     color: var(--caa-blue); 
     border-color: var(--caa-blue);
     transform: translateY(-2px); 
 }
-
 .last-updated-box { margin-top: 40px; color: #999; font-size: 0.85rem; }
 
 /* STEPS */
@@ -104,7 +92,6 @@ h2 {
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.9rem; }
 
 /* ICAO INPUT */
-/* ENDRET: Flex column for å midtstille label og input perfekt */
 #icao-search-container { 
     margin: 0 auto 30px auto; 
     text-align: center; 
@@ -114,7 +101,6 @@ h2 {
     align-items: center;
     gap: 10px;
 }
-
 .icao-input-wrapper { 
     position: relative; 
     display: flex; 
@@ -123,7 +109,6 @@ h2 {
     gap: 15px; 
     width: 100%; 
 }
-
 #icao-input { 
     padding: 15px; 
     font-size: 1.4rem; 
@@ -172,6 +157,27 @@ h2 {
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
 }
 .continue-button.selected div { color: white !important; }
+
+/* NY STIL FOR STIPLEDE BOKSER (STEG 4) */
+.dashed-btn {
+    background-color: white;
+    border: 2px dashed #999;
+    color: #444;
+    text-align: left;
+    padding: 15px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+.dashed-btn:hover, .dashed-btn.selected {
+    border-color: var(--caa-blue);
+    background-color: #f0f7ff;
+    color: var(--caa-blue);
+    border-style: solid; /* Solid kant ved hover/valg for bedre synlighet */
+}
 
 /* Sekundære knapper */
 .button-grid-secondary { margin-top: 20px; }
