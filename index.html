@@ -23,26 +23,34 @@
 
     <main class="container">
         
-        <div id="welcome-screen" class="question-card">
-            <h2>Velkommen til samsvarsvurdering</h2>
+        <div id="welcome-screen" class="question-card welcome-card">
             
-            <div style="text-align: left; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6;">
-                <p>Dette verktøyet hjelper deg å vurdere om du omfattes av <strong>Forordning (EU) 2025/20</strong>.</p>
-                <p>Du vil bli guidet gjennom en stegvis prosess basert på:</p>
-                <ul style="margin-bottom: 20px;">
-                    <li>Hvilken lufthavn tjenesten leveres på</li>
-                    <li>Hvilken type organisasjon du representerer</li>
-                    <li>Hvilke tjenester som utføres</li>
+            <div class="welcome-icon">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            
+            <h2>Flytskjema</h2>
+            
+            <p class="lead-text">
+                Verktøy for samsvarsvurdering iht. <strong>Forordning (EU) 2025/20</strong>.
+            </p>
+            
+            <div class="welcome-content">
+                <p>Dette verktøyet leder deg gjennom en prosess for å avklare om din virksomhet omfattes av regelverket, basert på:</p>
+                <ul class="clean-list">
+                    <li><i class="fas fa-plane-departure"></i> Lufthavn</li>
+                    <li><i class="fas fa-building"></i> Organisasjonstype</li>
+                    <li><i class="fas fa-cogs"></i> Tjenester</li>
                 </ul>
             </div>
 
-            <div class="last-updated-box">
-                <i class="fas fa-calendar-alt"></i> Sist oppdatert: <strong>18.01.2025</strong>
-            </div>
-
-            <button onclick="startTool()" class="continue-button" style="width: 100%; margin-top: 20px;">
-                Start verktøyet <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            <button onclick="startTool()" class="continue-button btn-start">
+                Start vurdering <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
             </button>
+
+            <div class="last-updated-box">
+                <small>Sist oppdatert: 18.01.2025</small>
+            </div>
         </div>
         <div id="tool-container" class="hidden">
             <div class="flow-steps-container">

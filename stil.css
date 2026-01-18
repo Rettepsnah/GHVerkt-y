@@ -7,45 +7,105 @@
     --caa-text: #333;
     --caa-success: #6A8E7F;
     --caa-highlight: #fff9c4;
-    --caa-contrast: #e37575; /* Kontrastfarge for info */
+    --caa-contrast: #e37575; 
     --choice-bg: #eef4f8;
 }
 
 body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--caa-bg); color: var(--caa-text); }
 
-/* NAVBAR ENDRINGER */
+/* NAVBAR */
 .navbar { width: 100%; background-color: var(--caa-blue); padding: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
 .navbar-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
 .nav-logo { height: 60px; width: auto; }
 .nav-center { flex-grow: 1; text-align: center; }
-/* Mindre og mer profesjonell tittel */
 .nav-title { color: white; margin: 0; font-size: 1.2rem; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; }
 .nav-right { width: 100px; }
 
-/* STEPS */
+/* CONTAINER & KORT */
+/* ENDRET: Økte margin-top fra 0 til 60px for å gi avstand til navbar */
+.container { max-width: 900px; margin: 60px auto 40px auto; padding: 0 20px; }
+
+.question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
+h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 25px; font-size: 1.4rem; }
+
+/* --- NY STIL FOR STARTSIDEN --- */
+.welcome-card {
+    text-align: center;
+    padding: 60px 40px;
+}
+.welcome-icon {
+    font-size: 3rem;
+    color: var(--caa-blue);
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+.welcome-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.lead-text {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.welcome-content {
+    background-color: #fafafa;
+    display: inline-block;
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+.clean-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+.clean-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--caa-dark);
+}
+.clean-list li i {
+    width: 30px;
+    color: var(--caa-blue);
+    opacity: 0.7;
+}
+.btn-start {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    justify-content: center;
+    background-color: var(--caa-blue);
+    color: white;
+    border: none;
+}
+.btn-start:hover {
+    background-color: var(--caa-dark);
+    color: white;
+    transform: translateY(-2px);
+}
+.last-updated-box {
+    margin-top: 40px;
+    color: #999;
+    font-size: 0.85rem;
+}
+/* ----------------------------- */
+
+/* STEPS (Original CSS) */
 .flow-steps-container { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 20px; gap: 15px; }
 .flow-step { display: flex; flex-direction: column; align-items: center; opacity: 0.4; transition: 0.3s; }
 .flow-step.active { opacity: 1; transform: scale(1.05); }
 .step-circle { width: 30px; height: 30px; background-color: var(--caa-blue); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
 .flow-step span { font-size: 0.75rem; font-weight: bold; color: var(--caa-blue); }
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.8rem; }
-
-/* CONTAINER & KORT */
-.container { max-width: 900px; margin: 0 auto 40px auto; padding: 0 20px; }
-.question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
-h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 25px; font-size: 1.4rem; }
-
-/* NY STIL FOR START-SIDE */
-.last-updated-box {
-    background-color: var(--choice-bg);
-    border-left: 4px solid var(--caa-blue);
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    color: var(--caa-text);
-    font-size: 0.9rem;
-    display: inline-block;
-    width: auto;
-}
 
 /* ICAO INPUT */
 #icao-search-container { margin: 0 auto 20px auto; text-align: center; max-width: 350px; }
