@@ -79,15 +79,17 @@
             <div class="card-wrapper">
                 <div id="quiz-card" class="question-card">
                     
-                    <div id="question-content">
+                    <div id="question-content" class="fade-in">
                         <h2 id="question-text">Laster spørsmål...</h2>
                         
                         <div id="icao-search-container" class="hidden">
                             <label for="icao-input">Skriv inn ICAO-kode</label>
                             <div class="icao-input-wrapper">
-                                <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM">
+                                <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM" list="airport-list" autocomplete="off">
                                 <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
                             </div>
+                            <datalist id="airport-list"></datalist>
+                            
                             <p id="icao-status"></p>
                         </div>
 
@@ -105,11 +107,15 @@
                         <div id="secondary-options-container" class="button-grid-secondary"></div>
                     </div>
 
-                    <div id="result-area" class="hidden">
+                    <div id="result-area" class="hidden fade-in">
                         <h2 class="result-header">Resultat</h2>
+                        <div id="result-summary" class="summary-box hidden"></div>
+                        
                         <div id="result-box" class="result-message"></div>
+                        
                         <div class="button-footer">
                             <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
+                            <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Lagre / Skriv ut</button>
                         </div>
                     </div>
 

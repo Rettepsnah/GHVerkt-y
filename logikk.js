@@ -117,7 +117,7 @@ const flow = [
     {
         id: "easa_airport",
         question: "Tjenestetilbyder på en EASA-lufthavn?",
-        extraHtml: step1Info, // Steg 1: Infoboks OVER input
+        extraHtml: step1Info,
         requireICAO: true, 
         options: [
             { text: "Gå videre", next: "entity_type", condition: "checkICAO" } 
@@ -127,7 +127,7 @@ const flow = [
         id: "entity_type",
         question: "Tilhører du en av disse aktør-kategoriene?",
         layout: "horizontal",
-        extraHtml: step2Info, // Steg 2: Infoboks UNDER knapper (Håndteres i renderStep)
+        extraHtml: step2Info,
         options: [
             { text: "GHSP", sub: "Ground Handling Service Provider", next: "service_type" },
             { text: "ADR", sub: "Lufthavnoperatør som også utfører ground handling", next: "service_type" },
@@ -138,7 +138,7 @@ const flow = [
     {
         id: "service_type",
         question: "Type tjenester?",
-        extraHtml: step3Info, // Steg 3: Infoboks UNDER knapper (Håndteres i renderStep)
+        extraHtml: step3Info,
         layout: "horizontal",
         options: [
             { text: "Passenger Handling", icon: "fa-users", legal: "Article 2(2)(a)", isService: true },
@@ -153,7 +153,7 @@ const flow = [
         id: "exemptions",
         question: "Unntatt regelverket - Utfører du utelukkende noen av disse tjenestene?",
         extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
-        layout: "grid", // Ny layout type
+        layout: "grid",
         options: [
             { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
             { text: "(b) Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
@@ -168,7 +168,6 @@ const flow = [
         ],
         secondaryOption: { 
             text: "Nei", 
-            // ENDRET RESULTATTEKST
             result: "<strong>Resultat:</strong><br>Tjenestene du utfører er omfattet av regelverket, og du må levere inn samsvarserklæring iht. (EU) 2025/20." 
         }
     }
@@ -176,19 +175,43 @@ const flow = [
 
 // Tilstand
 let stepHistory = [];
-let currentAirport = null;
+let userChoices = {
+    airport: "",
+    entity: "",
+    service: "",
+    exempt: "Nei"
+};
 
 function startTool() {
     document.getElementById('welcome-screen').classList.add('hidden');
     document.getElementById('tool-container').classList.remove('hidden');
     const input = document.getElementById('icao-input');
     if(input) input.value = "";
+    populateAirportList(); // Fyll datalist
     renderStep("easa_airport");
+}
+
+// Fyller datalist for autofullfør
+function populateAirportList() {
+    const dataList = document.getElementById('airport-list');
+    dataList.innerHTML = '';
+    for (const [icao, data] of Object.entries(airportDB)) {
+        const option = document.createElement('option');
+        option.value = icao;
+        option.label = data.name;
+        dataList.appendChild(option);
+    }
 }
 
 function renderStep(stepId, isBack = false) {
     const step = flow.find(s => s.id === stepId);
     
+    // Animasjon
+    const contentDiv = document.getElementById('question-content');
+    contentDiv.classList.remove('fade-in');
+    void contentDiv.offsetWidth; // Trigger reflow
+    contentDiv.classList.add('fade-in');
+
     // Håndter historikk
     if (!isBack && stepHistory.length > 0 && stepHistory[stepHistory.length - 1] !== stepId) {
         if (!stepHistory.includes(stepId)) stepHistory.push(stepId); 
@@ -196,12 +219,10 @@ function renderStep(stepId, isBack = false) {
         stepHistory.push(stepId);
     }
     
-    // Oppdater step-indikator
     document.querySelectorAll('.flow-step').forEach(el => el.classList.remove('active'));
     const indicator = document.getElementById(`step-indicator-${stepId}`);
     if (indicator) indicator.classList.add('active');
 
-    // Vis/skjul tilbake-knapp
     const backBtn = document.getElementById('back-btn');
     if (stepId === "easa_airport") {
         backBtn.classList.add('hidden');
@@ -210,7 +231,6 @@ function renderStep(stepId, isBack = false) {
         backBtn.classList.remove('hidden');
     }
 
-    // Nullstill visning
     const icaoContainer = document.getElementById('icao-search-container');
     const infoGrid = document.getElementById('info-grid');
     const infoBox = document.getElementById('info-box');
@@ -220,7 +240,6 @@ function renderStep(stepId, isBack = false) {
 
     document.getElementById('question-text').innerText = step.question;
     
-    // Håndter ICAO container
     if (stepId === "easa_airport") {
         icaoContainer.classList.remove('hidden');
         setupICAOListener(container); 
@@ -228,38 +247,27 @@ function renderStep(stepId, isBack = false) {
         icaoContainer.classList.add('hidden');
     }
 
-    // Nullstill og skjul containere som vi fyller dynamisk
     infoGrid.innerHTML = "";
     infoGrid.classList.add('hidden');
-    
     infoBox.innerHTML = "";
     infoBox.classList.add('hidden');
-
     serviceBox.classList.add('hidden');
     container.innerHTML = '';
     secondaryContainer.innerHTML = '';
 
-    // LOGIKK FOR PLASSERING AV INFOBOKSER:
-    // Steg 1: Infoboks OVER (extraHtml vises før knappene)
-    // Steg 2 & 3: Infoboks UNDER (extraHtml appendes til infoGrid men infoGrid flyttes under)
-    
     if (stepId === "easa_airport" && step.extraHtml) {
         infoGrid.innerHTML = step.extraHtml;
         infoGrid.classList.remove('hidden');
-        // Flytt infoGrid til å ligge før options-container i DOM hvis nødvendig, men standard rekkefølge i HTML er info-grid FØR options.
-        // I index.html ligger info-grid over options-container. Dette er riktig for Steg 1.
     }
 
-    // Sett grid-klasse
     if (step.layout === "horizontal") {
         container.className = "button-grid-main horizontal-grid";
     } else if (step.layout === "grid") {
-        container.className = "button-grid-main dashed-grid"; // 2 kolonner for Steg 4
+        container.className = "button-grid-main dashed-grid"; 
     } else {
         container.className = "button-grid-main vertical-grid";
     }
 
-    // Generer knapper
     if (stepId !== "easa_airport") {
         step.options.forEach(opt => {
             const btn = document.createElement('button');
@@ -278,14 +286,17 @@ function renderStep(stepId, isBack = false) {
             btn.innerHTML = html;
             
             btn.onclick = () => {
+                // Lagre valg
+                if (stepId === "entity_type") userChoices.entity = opt.text;
+                if (stepId === "service_type") userChoices.service = opt.text;
+
                 if (opt.isService) {
                     handleServiceClick(opt, secondaryContainer);
                 } 
                 else if (opt.action === "confirm_exempt") {
-                    // Marker valgt stiplet boks
+                    userChoices.exempt = "Ja (" + opt.text.substring(0, 30) + "...)";
                     container.querySelectorAll('.dashed-btn').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
-                    
                     handleExemptionClick(opt, secondaryContainer);
                 }
                 else if (stepId === "entity_type") {
@@ -319,24 +330,17 @@ function renderStep(stepId, isBack = false) {
         });
     }
 
-    // Håndter Infobokser for Steg 2 og 3 (skal ligge UNDER knappene)
-    // Vi gjør dette ved å flytte infoGrid-elementet i DOM eller bare fylle det og vite at vi må flytte det visuelt.
-    // Enklere: Vi flytter selve DOM-elementet `info-grid` til å ligge etter `options-container` for disse stegene.
-    
     const contentArea = document.getElementById('question-content');
     
     if (stepId !== "easa_airport" && step.extraHtml) {
-        // Flytt infoGrid til etter options-container
         contentArea.insertBefore(infoGrid, secondaryContainer); 
         infoGrid.innerHTML = step.extraHtml;
         infoGrid.classList.remove('hidden');
     } else if (stepId === "easa_airport") {
-        // Flytt infoGrid tilbake til før options-container (original plassering)
-        const infoBox = document.getElementById('info-box'); // Referanse
+        const infoBox = document.getElementById('info-box');
         contentArea.insertBefore(infoGrid, infoBox); 
     }
     
-    // For Steg 3: Flytt også service-detail-box til å ligge etter options, før secondary
     if (stepId === "service_type") {
         contentArea.insertBefore(serviceBox, secondaryContainer);
     }
@@ -380,6 +384,7 @@ function setupICAOListener(buttonContainer) {
             btn.style.borderColor = "#6A8E7F";
             btn.innerHTML = `<strong>Gå videre</strong>`;
             btn.onclick = () => {
+                userChoices.airport = input.value.toUpperCase() + (airportDB[input.value.toUpperCase()] ? " (" + airportDB[input.value.toUpperCase()].name + ")" : " (Manuelt bekreftet)");
                 stepHistory.push("entity_type");
                 renderStep("entity_type");
             };
@@ -387,13 +392,21 @@ function setupICAOListener(buttonContainer) {
         }
     };
 
-    if(input.value.length === 4 && airportDB[input.value.toUpperCase()]) {
-         const airport = airportDB[input.value.toUpperCase()];
-         if(airport.easa) updateButton(true);
-    }
+    // Helper for manual override
+    const showManualButton = () => {
+        buttonContainer.innerHTML = '';
+        const manBtn = document.createElement('button');
+        manBtn.className = 'btn-manual-confirm';
+        manBtn.innerHTML = "Jeg bekrefter at dette er en EASA-lufthavn";
+        manBtn.onclick = () => {
+            status.innerHTML = `<span style="color:#856404">Manuelt bekreftet.</span>`;
+            updateButton(true);
+        };
+        buttonContainer.appendChild(manBtn);
+    };
 
-    input.oninput = (e) => {
-        const val = e.target.value.toUpperCase();
+    const checkInput = () => {
+        const val = input.value.toUpperCase();
         if (val.length === 4) {
             const airport = airportDB[val];
             if (airport) {
@@ -411,7 +424,8 @@ function setupICAOListener(buttonContainer) {
                 status.innerText = "Ukjent ICAO-kode."; 
                 status.style.color = "#d9534f"; 
                 validIcon.classList.add('hidden');
-                updateButton(false);
+                // Vis manuell knapp for ukjente
+                showManualButton();
             }
         } else { 
             status.innerText = ""; 
@@ -419,6 +433,9 @@ function setupICAOListener(buttonContainer) {
             updateButton(false);
         }
     };
+
+    if(input.value.length === 4) checkInput();
+    input.oninput = checkInput;
 }
 
 function handleServiceClick(option, secondaryContainer) {
@@ -436,6 +453,7 @@ function handleServiceClick(option, secondaryContainer) {
     confirmBtn.style.marginBottom = "15px";
     confirmBtn.innerText = "Bekreft valg: " + option.text;
     confirmBtn.onclick = () => {
+        userChoices.service = option.text;
         stepHistory.push("exemptions");
         renderStep("exemptions");
     };
@@ -468,19 +486,22 @@ function showResult(text) {
     const resultArea = document.getElementById('result-area');
     resultArea.classList.remove('hidden');
     document.getElementById('result-box').innerHTML = text;
-    // Endret header tekst
     document.querySelector('.result-header').innerText = "Resultat";
+
+    // Generer oppsummering
+    const summaryBox = document.getElementById('result-summary');
+    summaryBox.classList.remove('hidden');
+    summaryBox.innerHTML = `
+        <h4>Dine valg:</h4>
+        <div class="summary-item"><span class="summary-label">Lufthavn:</span> <span>${userChoices.airport || "-"}</span></div>
+        <div class="summary-item"><span class="summary-label">Organisasjon:</span> <span>${userChoices.entity || "-"}</span></div>
+        <div class="summary-item"><span class="summary-label">Tjeneste:</span> <span>${userChoices.service || "-"}</span></div>
+        <div class="summary-item"><span class="summary-label">Unntak:</span> <span>${userChoices.exempt}</span></div>
+    `;
 }
 
-// RETTET FUNKSJON FOR TOGGLE
 function toggleInfo(element) {
-    // Sjekk om denne boksen allerede er åpen
     const isOpen = element.classList.contains('open');
-    
-    // (Valgfritt) Lukk alle andre bokser først hvis du vil ha "accordion" effekt
-    // document.querySelectorAll('.info-card-modern').forEach(el => el.classList.remove('open'));
-
-    // Toggle denne boksen
     if (isOpen) {
         element.classList.remove('open');
     } else {
