@@ -47,18 +47,13 @@ const airportDB = {
     "ENSK": { name: "Stokmarknes lufthavn", easa: true }
 };
 
-// Data for infobokser i Steg 1
+// Data for infobokser i Steg 1 - ENDRET: Fjernet expand, alltid åpne
 const step1Info = `
-    <div class="info-card-modern blue expandable" onclick="toggleInfo(this)">
+    <div class="info-card-modern blue">
         <div class="info-header-row">
             <i class="fas fa-question-circle info-icon"></i>
             <div class="info-content">
                 <h4>Hva er en EASA-lufthavn?</h4>
-            </div>
-            <i class="fas fa-chevron-down toggle-icon"></i>
-        </div>
-        <div class="info-details">
-            <div class="info-content">
                 <p>En EASA-lufthavn er en flyplass som oppfyller felleseuropeiske krav til utforming og drift (sertifisering). For at en flyplass i det hele tatt skal falle inn under dette regelverket (Basisforordning 2018/1139 Art. 2.1.e), må den oppfylle alle disse kriteriene:</p>
                 <ul style="margin-top:10px; margin-bottom:10px; padding-left:20px;">
                     <li>Den er åpen for offentlig bruk (public use).</li>
@@ -70,16 +65,11 @@ const step1Info = `
         </div>
     </div>
 
-    <div class="info-card-modern expandable" onclick="toggleInfo(this)">
+    <div class="info-card-modern">
         <div class="info-header-row">
             <i class="fas fa-exclamation-circle info-icon"></i>
             <div class="info-content">
                 <h4>Lufthavner som er unntatt</h4>
-            </div>
-            <i class="fas fa-chevron-down toggle-icon"></i>
-        </div>
-        <div class="info-details">
-            <div class="info-content">
                 <p>Selv om en flyplass oppfyller kriteriene over (f.eks. 900 meter asfalt og rutetrafikk), gir artikkel 2.7 i forordningen Norge (ved Luftfartstilsynet) en rett til å unnta flyplassen fra EASA-reglene dersom den har:</p>
                 <ul style="margin-top:5px; margin-bottom:5px; padding-left:20px;">
                     <li>Under 10 000 passasjerer i året, og</li>
@@ -151,8 +141,8 @@ const flow = [
     },
     {
         id: "exemptions",
-        question: "Unntatt regelverket - Utfører du utelukkende noen av disse tjenestene?",
-        extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
+        // ENDRET: Ny tittel, fjernet "Scope" header
+        question: "Noen tjenester og aktiviteter er unntatt - Er noen av disse aktuelle for deg?",
         layout: "grid",
         options: [
             { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
@@ -373,7 +363,7 @@ function setupICAOListener(buttonContainer) {
     const status = document.getElementById('icao-status');
     const validIcon = document.getElementById('icao-valid-icon');
     
-    const updateButton = (isValid) => {
+    const updateButton = (isValid, airportName) => {
         buttonContainer.innerHTML = ''; 
         if (isValid) {
             const btn = document.createElement('button');
@@ -383,7 +373,7 @@ function setupICAOListener(buttonContainer) {
             btn.style.borderColor = "#6A8E7F";
             btn.innerHTML = `<strong>Gå videre</strong>`;
             btn.onclick = () => {
-                userChoices.airport = input.value.toUpperCase() + (airportDB[input.value.toUpperCase()] ? " (" + airportDB[input.value.toUpperCase()].name + ")" : " (Manuelt bekreftet)");
+                userChoices.airport = airportName || (input.value.toUpperCase() + " (Manuelt bekreftet)");
                 stepHistory.push("entity_type");
                 renderStep("entity_type");
             };
@@ -398,41 +388,66 @@ function setupICAOListener(buttonContainer) {
         manBtn.innerHTML = "Jeg bekrefter at dette er en EASA-lufthavn";
         manBtn.onclick = () => {
             status.innerHTML = `<span style="color:#856404">Manuelt bekreftet.</span>`;
-            updateButton(true);
+            updateButton(true, input.value + " (Manuelt bekreftet)");
         };
         buttonContainer.appendChild(manBtn);
     };
 
     const checkInput = () => {
         const val = input.value.toUpperCase();
-        if (val.length === 4) {
-            const airport = airportDB[val];
-            if (airport) {
-                if (airport.easa) {
-                    status.innerHTML = `<span style="color:var(--caa-blue)">${airport.name}</span> er en EASA-lufthavn.`;
-                    validIcon.classList.remove('hidden');
-                    updateButton(true);
-                } else {
-                    status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
-                    status.style.color = "#d9534f";
-                    validIcon.classList.add('hidden');
-                    updateButton(false);
+        
+        // Sjekk om input er tom
+        if (val.length < 2) {
+             status.innerText = ""; 
+             validIcon.classList.add('hidden');
+             updateButton(false);
+             return;
+        }
+
+        // 1. Sjekk ICAO kode (eksakt match)
+        let airport = airportDB[val];
+
+        // 2. Hvis ikke ICAO, sjekk navn (om input matcher deler av navnet i DB)
+        if (!airport) {
+            for (const key in airportDB) {
+                if (airportDB[key].name.toUpperCase() === val) {
+                    airport = airportDB[key];
+                    airport.icao = key; // lagre koden midlertidig
+                    break;
                 }
-            } else { 
-                status.innerText = "Ukjent ICAO-kode."; 
+            }
+        }
+
+        if (airport) {
+            if (airport.easa) {
+                const code = airport.icao || val;
+                status.innerHTML = `<span style="color:var(--caa-blue)">${airport.name}</span> (${code}) er en EASA-lufthavn.`;
+                validIcon.classList.remove('hidden');
+                updateButton(true, `${airport.name} (${code})`);
+            } else {
+                status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
+                status.style.color = "#d9534f";
+                validIcon.classList.add('hidden');
+                updateButton(false);
+            }
+        } else { 
+            // Ukjent input
+            if(val.length >= 4) {
+                status.innerText = "Ukjent lufthavn/kode."; 
                 status.style.color = "#d9534f"; 
                 validIcon.classList.add('hidden');
                 showManualButton();
+            } else {
+                status.innerText = "";
+                validIcon.classList.add('hidden');
+                updateButton(false);
             }
-        } else { 
-            status.innerText = ""; 
-            validIcon.classList.add('hidden');
-            updateButton(false);
         }
     };
 
-    if(input.value.length === 4) checkInput();
     input.oninput = checkInput;
+    // Kjør sjekk med en gang i tilfelle nettleser autofyller
+    if(input.value.length > 0) checkInput();
 }
 
 function handleServiceClick(option, secondaryContainer) {
@@ -496,14 +511,7 @@ function showResult(text) {
     `;
 }
 
-function toggleInfo(element) {
-    const isOpen = element.classList.contains('open');
-    if (isOpen) {
-        element.classList.remove('open');
-    } else {
-        element.classList.add('open');
-    }
-}
+// Fjernet toggleInfo funksjonen da boksene nå er statiske
 
 document.addEventListener('DOMContentLoaded', () => {
     // startTool() kalles fra HTML
