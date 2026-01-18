@@ -47,20 +47,32 @@ const airportDB = {
     "ENSK": { name: "Stokmarknes lufthavn", easa: true }
 };
 
-// Data for infobokser i Steg 1
+// Data for infobokser i Steg 1 - OPPDATERT TEKST
 const step1Info = `
     <div class="info-card-modern blue">
         <i class="fas fa-question-circle info-icon"></i>
         <div class="info-content">
             <h4>Hva er en EASA-lufthavn?</h4>
-            <p>En lufthavn underlagt (EU) 2018/1139. Må være åpen for allmennheten, ha kommersiell trafikk og instrumentprosedyrer.</p>
+            <p>En EASA-lufthavn er en flyplass som oppfyller felleseuropeiske krav til utforming og drift (sertifisering). For at en flyplass i det hele tatt skal falle inn under dette regelverket (Basisforordning 2018/1139 Art. 2.1.e), må den oppfylle alle disse kriteriene:</p>
+            <ul style="margin-top:10px; margin-bottom:10px; padding-left:20px;">
+                <li>Den er åpen for offentlig bruk (public use).</li>
+                <li>Den betjener kommersiell luftfart (rute-, charter- eller fraktflyging).</li>
+                <li>Den har en asfaltert/dekket instrumentrullebane på 800 meter eller mer (eller betjener helikoptre med instrumentprosedyrer).</li>
+            </ul>
+            <p>Hvis en flyplass ikke oppfyller disse (f.eks. kun har gressbane eller er stengt for kommersiell trafikk), er den uansett en nasjonal lufthavn.</p>
         </div>
     </div>
     <div class="info-card-modern">
         <i class="fas fa-exclamation-circle info-icon"></i>
         <div class="info-content">
-            <h4>Lufthavner som er unntatt</h4>
-            <p>Militære lufthavner og de fleste kortbanelufthavner er normalt unntatt, men sjekk ICAO-koden for sikkerhet.</p>
+            <h4>Unntaket for "små" lufthavner (< 10 000 pax)</h4>
+            <p>Selv om en flyplass oppfyller kriteriene over (f.eks. 900 meter asfalt og rutetrafikk), gir artikkel 2.7 i forordningen Norge (ved Luftfartstilsynet) en rett til å unnta flyplassen fra EASA-reglene dersom den har:</p>
+            <ul style="margin-top:5px; margin-bottom:5px; padding-left:20px;">
+                <li>Under 10 000 passasjerer i året, og</li>
+                <li>Under 850 fraktbevegelser i året.</li>
+            </ul>
+            <p style="margin-top:10px;"><strong>Konsekvensen av unntaket:</strong><br>
+            Hvis en flyplass unntas, slipper den de omfattende EASA-kravene, men må i stedet forholde seg til nasjonalt regelverk (i Norge ofte BSL E 1-1).</p>
         </div>
     </div>
 `;

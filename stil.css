@@ -22,7 +22,6 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 .nav-right { width: 100px; }
 
 /* CONTAINER & KORT */
-/* ENDRET: Økte margin-top fra 0 til 60px for å gi avstand til navbar */
 .container { max-width: 900px; margin: 60px auto 40px auto; padding: 0 20px; }
 
 .question-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--caa-blue); position: relative; }
@@ -107,12 +106,36 @@ h2 { text-align: center; color: var(--caa-blue); margin-top: 0; margin-bottom: 2
 .flow-step span { font-size: 0.75rem; font-weight: bold; color: var(--caa-blue); }
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.8rem; }
 
-/* ICAO INPUT */
+/* ICAO INPUT - OPPDATERT: Ikon flyttet ut */
 #icao-search-container { margin: 0 auto 20px auto; text-align: center; max-width: 350px; }
-.icao-input-wrapper { position: relative; display: inline-block; width: 100%; }
-#icao-input { padding: 12px; font-size: 1.2rem; text-align: center; width: 150px; border: 2px solid #ccc; border-radius: 6px; text-transform: uppercase; transition: 0.3s; }
+
+.icao-input-wrapper { 
+    position: relative; 
+    display: flex; /* Endret til flex for å legge elementer på rad */
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Avstand mellom input og ikon */
+    width: 100%; 
+}
+
+#icao-input { 
+    padding: 12px; 
+    font-size: 1.2rem; 
+    text-align: center; 
+    width: 150px; 
+    border: 2px solid #ccc; 
+    border-radius: 6px; 
+    text-transform: uppercase; 
+    transition: 0.3s; 
+}
 #icao-input:focus { border-color: var(--caa-blue); outline: none; }
-#icao-valid-icon { position: absolute; right: 80px; top: 15px; color: var(--caa-success); font-size: 1.2rem; }
+
+#icao-valid-icon { 
+    position: static; /* Ikke lenger absolutt posisjonert */
+    color: var(--caa-success); 
+    font-size: 1.5rem; 
+}
+
 #icao-status { margin-top: 10px; font-size: 0.9rem; font-weight: bold; min-height: 1.2em; }
 
 /* NYE INFOBOKSER (Steg 1 & 3) */
