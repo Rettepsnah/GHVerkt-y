@@ -16,15 +16,17 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 /* NAVBAR */
 .navbar { width: 100%; background-color: var(--caa-blue); padding: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
 .navbar-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
-.nav-logo { height: 60px; width: auto; }
+
+/* ENDRET: Økt størrelse på logo for bedre proporsjonalitet */
+.nav-logo { height: 80px; width: auto; }
+
 .nav-center { flex-grow: 1; text-align: center; }
 
-/* ENDRET: Større og tydeligere tittel */
 .nav-title { 
     color: white; 
     margin: 0; 
-    font-size: 1.6rem; /* Økt størrelse */
-    font-weight: 700; /* Tykkere skrift */
+    font-size: 1.6rem; 
+    font-weight: 700; 
     letter-spacing: 0.5px; 
     text-transform: uppercase; 
     line-height: 1.2;
@@ -36,19 +38,18 @@ body { font-family: 'Overpass', Arial, sans-serif; margin: 0; padding: 0; backgr
 
 .question-card { 
     background: white; 
-    padding: 50px 40px; /* Litt mer padding vertikalt for bedre proporsjoner */
+    padding: 50px 40px; 
     border-radius: 8px; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-    border-top: 5px solid var(--caa-blue); /* Litt tykkere topp-border */
+    border-top: 5px solid var(--caa-blue); 
     position: relative; 
 }
 
-/* ENDRET: Mer luft under overskrifter */
 h2 { 
     text-align: center; 
     color: var(--caa-blue); 
     margin-top: 0; 
-    margin-bottom: 35px; /* Økt avstand ned til innholdet */
+    margin-bottom: 35px; 
     font-size: 1.8rem; 
 }
 
@@ -57,12 +58,41 @@ h2 {
 .welcome-icon { font-size: 3rem; color: var(--caa-blue); margin-bottom: 20px; opacity: 0.9; }
 .welcome-card h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
 .lead-text { font-size: 1.2rem; color: #555; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
-.welcome-content { background-color: #fafafa; display: inline-block; padding: 20px 40px; border-radius: 8px; text-align: left; margin-bottom: 30px; border: 1px solid #eee; }
-.clean-list { list-style: none; padding: 0; margin-top: 15px; }
+
+/* ENDRET: Midtstiller innholdet i boksen */
+.welcome-content { 
+    background-color: #fafafa; 
+    display: inline-block; 
+    padding: 20px 40px; 
+    border-radius: 8px; 
+    text-align: center; /* Sentrerer teksten */
+    margin-bottom: 30px; 
+    border: 1px solid #eee; 
+}
+
+/* ENDRET: Midtstiller listen */
+.clean-list { 
+    list-style: none; 
+    padding: 0; 
+    margin-top: 15px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Sentrerer elementene */
+}
+
 .clean-list li { margin-bottom: 10px; display: flex; align-items: center; font-weight: 600; color: var(--caa-dark); }
 .clean-list li i { width: 30px; color: var(--caa-blue); opacity: 0.7; }
-.btn-start { width: 100%; max-width: 300px; margin: 0 auto; justify-content: center; background-color: var(--caa-blue); color: white; border: none; }
-.btn-start:hover { background-color: var(--caa-dark); color: white; transform: translateY(-2px); }
+
+.btn-start { width: 100%; max-width: 300px; margin: 0 auto; justify-content: center; background-color: var(--caa-blue); color: white; border: 2px solid var(--caa-blue); }
+
+/* ENDRET: Hover-effekt med hvit bakgrunn og blå tekst */
+.btn-start:hover { 
+    background-color: white; 
+    color: var(--caa-blue); 
+    border-color: var(--caa-blue);
+    transform: translateY(-2px); 
+}
+
 .last-updated-box { margin-top: 40px; color: #999; font-size: 0.85rem; }
 
 /* STEPS */
@@ -74,7 +104,17 @@ h2 {
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.9rem; }
 
 /* ICAO INPUT */
-#icao-search-container { margin: 0 auto 30px auto; text-align: center; max-width: 400px; }
+/* ENDRET: Flex column for å midtstille label og input perfekt */
+#icao-search-container { 
+    margin: 0 auto 30px auto; 
+    text-align: center; 
+    max-width: 400px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
 .icao-input-wrapper { 
     position: relative; 
     display: flex; 
@@ -83,7 +123,7 @@ h2 {
     gap: 15px; 
     width: 100%; 
 }
-/* ENDRET: Litt større input-felt for bedre visuell balanse */
+
 #icao-input { 
     padding: 15px; 
     font-size: 1.4rem; 

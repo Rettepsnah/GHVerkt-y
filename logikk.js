@@ -48,6 +48,7 @@ const airportDB = {
 };
 
 // Data for infobokser i Steg 1
+// ENDRET TEKST I ORANSJE BOKS
 const step1Info = `
     <div class="info-card-modern blue">
         <i class="fas fa-question-circle info-icon"></i>
@@ -71,8 +72,6 @@ const step1Info = `
                 <li>Under 10 000 passasjerer i året, og</li>
                 <li>Under 850 fraktbevegelser i året.</li>
             </ul>
-            <p style="margin-top:10px;"><strong>Konsekvensen av unntaket:</strong><br>
-            Hvis en flyplass unntas, slipper den de omfattende EASA-kravene, men må i stedet forholde seg til nasjonalt regelverk (i Norge ofte BSL E 1-1).</p>
         </div>
     </div>
 `;
@@ -88,7 +87,7 @@ const step2Info = `
     </div>
 `;
 
-// Data for infoboks i Steg 3 - ENDRET TEKST
+// Data for infoboks i Steg 3
 const step3Info = `
     <div class="info-card-modern blue" style="grid-column: span 2;">
         <i class="fas fa-info-circle info-icon"></i>
@@ -121,7 +120,6 @@ const exemptionsList = `
 const flow = [
     {
         id: "easa_airport",
-        // ENDRET SPØRSMÅL HER
         question: "Tjenestetilbyder på en EASA-lufthavn?",
         extraHtml: step1Info,
         requireICAO: true, 
@@ -131,7 +129,6 @@ const flow = [
     },
     {
         id: "entity_type",
-        // ENDRET SPØRSMÅL HER
         question: "Tilhører du en av disse aktør-kategoriene?",
         layout: "horizontal",
         extraHtml: step2Info,
@@ -144,7 +141,6 @@ const flow = [
     },
     {
         id: "service_type",
-        // ENDRET SPØRSMÅL HER
         question: "Type tjenester?",
         extraHtml: step3Info,
         layout: "horizontal",
@@ -263,18 +259,13 @@ function renderStep(stepId, isBack = false) {
                 if (opt.isService) {
                     handleServiceClick(opt, secondaryContainer);
                 } else if (stepId === "entity_type") {
-                    // Logikk for Steg 2: Markering + "Gå videre"-knapp
                     
-                    // Fjern markering fra andre knapper
                     container.querySelectorAll('.continue-button').forEach(b => b.classList.remove('selected'));
-                    // Marker denne knappen
                     btn.classList.add('selected');
 
-                    // Fjern gammel "Gå videre"-knapp hvis den finnes
                     const oldBtn = document.getElementById('next-step-btn');
                     if(oldBtn) oldBtn.remove();
 
-                    // Lag ny "Gå videre"-knapp
                     const nextBtn = document.createElement('button');
                     nextBtn.id = 'next-step-btn';
                     nextBtn.className = 'btn-reset';
@@ -287,7 +278,6 @@ function renderStep(stepId, isBack = false) {
                          renderStep(opt.next);
                     };
                     
-                    // Legg til knappen før "Ingen av disse" i sekundær-containeren
                     secondaryContainer.insertBefore(nextBtn, secondaryContainer.firstChild);
 
                 } else if (opt.result) {
@@ -323,6 +313,7 @@ function setupICAOListener(buttonContainer) {
     const status = document.getElementById('icao-status');
     const validIcon = document.getElementById('icao-valid-icon');
     
+    // ENDRET: Forenklet tekst på knappen
     const updateButton = (isValid) => {
         buttonContainer.innerHTML = ''; 
         if (isValid) {
@@ -331,7 +322,7 @@ function setupICAOListener(buttonContainer) {
             btn.style.width = "100%"; 
             btn.style.backgroundColor = "#e8f5e9";
             btn.style.borderColor = "#6A8E7F";
-            btn.innerHTML = `<strong>Gå videre</strong><br><span style='font-size:0.8rem'>Lufthavn godkjent</span>`;
+            btn.innerHTML = `<strong>Gå videre</strong>`;
             btn.onclick = () => {
                 stepHistory.push("entity_type");
                 renderStep("entity_type");
