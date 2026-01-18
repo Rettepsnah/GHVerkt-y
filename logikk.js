@@ -65,7 +65,7 @@ const step1Info = `
     <div class="info-card-modern">
         <i class="fas fa-exclamation-circle info-icon"></i>
         <div class="info-content">
-            <h4>Unntaket for "små" lufthavner (< 10 000 pax)</h4>
+            <h4>Lufthavner som er unntatt</h4>
             <p>Selv om en flyplass oppfyller kriteriene over (f.eks. 900 meter asfalt og rutetrafikk), gir artikkel 2.7 i forordningen Norge (ved Luftfartstilsynet) en rett til å unnta flyplassen fra EASA-reglene dersom den har:</p>
             <ul style="margin-top:5px; margin-bottom:5px; padding-left:20px;">
                 <li>Under 10 000 passasjerer i året, og</li>
@@ -77,7 +77,7 @@ const step1Info = `
     </div>
 `;
 
-// NY: Data for infoboks i Steg 2
+// Data for infoboks i Steg 2
 const step2Info = `
     <div class="info-card-modern blue" style="grid-column: span 2;">
         <i class="fas fa-plane info-icon"></i>
@@ -88,13 +88,13 @@ const step2Info = `
     </div>
 `;
 
-// Data for infoboks i Steg 3
+// Data for infoboks i Steg 3 - ENDRET TEKST
 const step3Info = `
     <div class="info-card-modern blue" style="grid-column: span 2;">
         <i class="fas fa-info-circle info-icon"></i>
         <div class="info-content">
             <h4>Om bakketjenester</h4>
-            <p>Regelverket gjelder kun hvis du leverer spesifikke bakketjenester listet nedenfor på en EASA-lufthavn. Hvis du leverer andre tjenester enn disse, er du ikke omfattet.</p>
+            <p>Regelverket gjelder for bakketjenester som faller inn under kategoriene under. Trykk på knappene for å få opp de respektive tjenestene.</p>
         </div>
     </div>
 `;
@@ -121,7 +121,8 @@ const exemptionsList = `
 const flow = [
     {
         id: "easa_airport",
-        question: "Leveres tjenesten på en EASA Lufthavn?",
+        // ENDRET SPØRSMÅL HER
+        question: "Tjenestetilbyder på en EASA-lufthavn?",
         extraHtml: step1Info,
         requireICAO: true, 
         options: [
@@ -130,9 +131,10 @@ const flow = [
     },
     {
         id: "entity_type",
-        question: "Hvilken organisasjon representerer du?",
+        // ENDRET SPØRSMÅL HER
+        question: "Tilhører du en av disse aktør-kategoriene?",
         layout: "horizontal",
-        extraHtml: step2Info, // La til infoboks her
+        extraHtml: step2Info,
         options: [
             { text: "GHSP", sub: "Ground Handling Service Provider", next: "service_type" },
             { text: "ADR", sub: "Lufthavnoperatør som også utfører ground handling", next: "service_type" },
@@ -142,7 +144,8 @@ const flow = [
     },
     {
         id: "service_type",
-        question: "Hvilken bakketjeneste leverer dere?",
+        // ENDRET SPØRSMÅL HER
+        question: "Type tjenester?",
         extraHtml: step3Info,
         layout: "horizontal",
         options: [
@@ -260,7 +263,7 @@ function renderStep(stepId, isBack = false) {
                 if (opt.isService) {
                     handleServiceClick(opt, secondaryContainer);
                 } else if (stepId === "entity_type") {
-                    // NY LOGIKK FOR STEG 2: Markering + "Gå videre"-knapp
+                    // Logikk for Steg 2: Markering + "Gå videre"-knapp
                     
                     // Fjern markering fra andre knapper
                     container.querySelectorAll('.continue-button').forEach(b => b.classList.remove('selected'));
