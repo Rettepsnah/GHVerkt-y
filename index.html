@@ -48,6 +48,12 @@
                 Start vurdering <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
             </button>
 
+            <div class="disclaimer-text">
+                <strong>NB:</strong> Brukeren er selv ansvarlig for å sjekke gjeldende regelverk. 
+                Dette verktøyet er kun en veiledning. Eventuelle spørsmål og behov for avklaring kan sendes til 
+                <a href="mailto:postmottak@caa.no">postmottak@caa.no</a>.
+            </div>
+
             <div class="last-updated-box">
                 <small>Sist oppdatert: 18.01.2025</small>
             </div>
@@ -85,11 +91,10 @@
                         <div id="icao-search-container" class="hidden">
                             <label for="icao-input">Skriv inn ICAO-kode</label>
                             <div class="icao-input-wrapper">
-                                <input type="text" id="icao-input" maxlength="4" placeholder="F.eks. ENGM" list="airport-list" autocomplete="off">
+                                <input type="text" id="icao-input" maxlength="4" placeholder="ENXX" list="airport-list" autocomplete="off">
                                 <span id="icao-valid-icon" class="hidden"><i class="fas fa-check-circle"></i></span>
                             </div>
                             <datalist id="airport-list"></datalist>
-                            
                             <p id="icao-status"></p>
                         </div>
 
@@ -110,9 +115,7 @@
                     <div id="result-area" class="hidden fade-in">
                         <h2 class="result-header">Resultat</h2>
                         <div id="result-summary" class="summary-box hidden"></div>
-                        
                         <div id="result-box" class="result-message"></div>
-                        
                         <div class="button-footer">
                             <button onclick="location.reload()" class="btn-reset">Start på nytt</button>
                             <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Lagre / Skriv ut</button>

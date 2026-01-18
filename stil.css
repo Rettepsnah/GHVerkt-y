@@ -63,25 +63,48 @@ h2 {
 .welcome-icon { font-size: 3rem; color: var(--caa-blue); margin-bottom: 20px; opacity: 0.9; }
 .welcome-card h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
 .lead-text { font-size: 1.2rem; color: #555; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
 .welcome-content { 
     background-color: #fafafa; 
     display: inline-block; 
-    padding: 20px 40px; 
+    padding: 30px 40px; /* Litt mer padding */
     border-radius: 8px; 
     text-align: center; 
     margin-bottom: 30px; 
     border: 1px solid #eee; 
+    width: 100%; /* Bruk full bredde for å gi plass til vannrett liste */
+    box-sizing: border-box;
 }
+
+/* ENDRET: Vannrett liste med større elementer */
 .clean-list { 
     list-style: none; 
     padding: 0; 
-    margin-top: 15px; 
+    margin-top: 25px; 
     display: flex;
-    flex-direction: column;
-    align-items: center; 
+    flex-direction: row; /* Vannrett */
+    justify-content: center; /* Midtstilt */
+    gap: 40px; /* God avstand mellom elementene */
+    flex-wrap: wrap; /* Brekk linje på små skjermer */
 }
-.clean-list li { margin-bottom: 10px; display: flex; align-items: center; font-weight: 600; color: var(--caa-dark); }
-.clean-list li i { width: 30px; color: var(--caa-blue); opacity: 0.7; }
+
+.clean-list li { 
+    margin-bottom: 10px; 
+    display: flex; 
+    flex-direction: column; /* Ikon over tekst */
+    align-items: center; 
+    font-weight: 700; 
+    color: var(--caa-dark);
+    font-size: 1.1rem; /* Større tekst */
+}
+
+.clean-list li i { 
+    width: auto; 
+    color: var(--caa-blue); 
+    opacity: 0.9;
+    font-size: 2rem; /* Større ikon */
+    margin-bottom: 10px;
+}
 
 .btn-start { width: 100%; max-width: 300px; margin: 0 auto; justify-content: center; background-color: var(--caa-blue); color: white; border: 2px solid var(--caa-blue); }
 .btn-start:hover { 
@@ -91,6 +114,22 @@ h2 {
     transform: translateY(-2px); 
 }
 .last-updated-box { margin-top: 40px; color: #999; font-size: 0.85rem; }
+
+/* NY: Disclaimer tekst */
+.disclaimer-text {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #666;
+    background-color: #fff8e1;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+.disclaimer-text a { color: var(--caa-blue); text-decoration: underline; }
 
 /* STEPS */
 .flow-steps-container { display: flex; justify-content: center; align-items: center; margin-bottom: 30px; margin-top: 20px; gap: 15px; }
@@ -162,15 +201,20 @@ h2 {
     flex-direction: column; 
 }
 
-.info-card-modern.expandable { cursor: pointer; transition: background-color 0.2s; }
-.info-card-modern.expandable:hover { background-color: #fff8e1; }
+/* ENDRET: Tydeligere "klikkbar" look */
+.info-card-modern.expandable { cursor: pointer; transition: all 0.2s; position: relative; }
+.info-card-modern.expandable:hover { 
+    background-color: #fff8e1; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
 .info-card-modern.blue.expandable:hover { background-color: #f1f8fe; }
 
 .info-header-row { display: flex; align-items: center; gap: 15px; width: 100%; }
 .info-details { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); animation: fadeIn 0.3s; display: none; }
 .info-card-modern.open .info-details { display: block; }
-.toggle-icon { margin-left: auto; transition: transform 0.3s; opacity: 0.6; }
-.info-card-modern.open .toggle-icon { transform: rotate(180deg); }
+.toggle-icon { margin-left: auto; transition: transform 0.3s; opacity: 0.6; font-size: 1.2rem; }
+.info-card-modern.open .toggle-icon { transform: rotate(180deg); opacity: 1; color: var(--caa-blue); }
 
 .info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
 .info-icon { font-size: 1.6rem; color: rgba(0,0,0,0.3); flex-shrink: 0; }
@@ -252,6 +296,7 @@ h2 {
 }
 
 @media (max-width: 600px) {
+    .clean-list { flex-direction: column; gap: 15px; } /* Stack på mobil */
     .horizontal-grid, .dashed-grid { grid-template-columns: 1fr; }
     .info-grid { grid-template-columns: 1fr; }
     .nav-title { font-size: 1.2rem; line-height: 1.3; }

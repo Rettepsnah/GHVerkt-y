@@ -187,11 +187,10 @@ function startTool() {
     document.getElementById('tool-container').classList.remove('hidden');
     const input = document.getElementById('icao-input');
     if(input) input.value = "";
-    populateAirportList(); // Fyll datalist
+    populateAirportList(); 
     renderStep("easa_airport");
 }
 
-// Fyller datalist for autofullfør
 function populateAirportList() {
     const dataList = document.getElementById('airport-list');
     dataList.innerHTML = '';
@@ -209,7 +208,7 @@ function renderStep(stepId, isBack = false) {
     // Animasjon
     const contentDiv = document.getElementById('question-content');
     contentDiv.classList.remove('fade-in');
-    void contentDiv.offsetWidth; // Trigger reflow
+    void contentDiv.offsetWidth; 
     contentDiv.classList.add('fade-in');
 
     // Håndter historikk
@@ -392,7 +391,6 @@ function setupICAOListener(buttonContainer) {
         }
     };
 
-    // Helper for manual override
     const showManualButton = () => {
         buttonContainer.innerHTML = '';
         const manBtn = document.createElement('button');
@@ -424,7 +422,6 @@ function setupICAOListener(buttonContainer) {
                 status.innerText = "Ukjent ICAO-kode."; 
                 status.style.color = "#d9534f"; 
                 validIcon.classList.add('hidden');
-                // Vis manuell knapp for ukjente
                 showManualButton();
             }
         } else { 
@@ -488,7 +485,6 @@ function showResult(text) {
     document.getElementById('result-box').innerHTML = text;
     document.querySelector('.result-header').innerText = "Resultat";
 
-    // Generer oppsummering
     const summaryBox = document.getElementById('result-summary');
     summaryBox.classList.remove('hidden');
     summaryBox.innerHTML = `
