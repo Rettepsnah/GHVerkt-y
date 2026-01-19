@@ -177,7 +177,6 @@ function startTool() {
     document.getElementById('tool-container').classList.remove('hidden');
     const input = document.getElementById('icao-input');
     if(input) input.value = "";
-    // Fjernet populateAirportList da vi ikke bruker datalist lenger
     renderStep("easa_airport");
 }
 
@@ -349,15 +348,15 @@ function goBack() {
 
 function setupICAOListener(buttonContainer) {
     const input = document.getElementById('icao-input');
+    const nameDisplay = document.getElementById('icao-name-display');
+    const iconBox = document.getElementById('icao-icon-box');
     const status = document.getElementById('icao-status');
-    const validIcon = document.getElementById('icao-valid-icon');
     
     const updateButton = (isValid, airportName) => {
         buttonContainer.innerHTML = ''; 
         if (isValid) {
-            // ENDRET: Ny "Gå videre" knapp i blå stil
             const btn = document.createElement('button');
-            btn.className = 'btn-reset'; // Bruker standard blå stil
+            btn.className = 'btn-reset'; // Blå stil
             btn.style.width = "100%"; 
             btn.innerHTML = `Gå videre <i class="fas fa-arrow-right"></i>`;
             btn.onclick = () => {
@@ -369,38 +368,66 @@ function setupICAOListener(buttonContainer) {
         }
     };
 
+    const showManualButton = () => {
+        buttonContainer.innerHTML = '';
+        const manBtn = document.createElement('button');
+        manBtn.className = 'btn-manual-confirm';
+        manBtn.innerHTML = "Jeg bekrefter at dette er en EASA-lufthavn";
+        manBtn.onclick = () => {
+            nameDisplay.innerText = "Manuelt bekreftet";
+            iconBox.innerHTML = '<i class="fas fa-check" style="color: green;"></i>';
+            iconBox.style.borderColor = "green";
+            status.innerHTML = `<span style="color:#856404">Manuelt bekreftet.</span>`;
+            updateButton(true, input.value + " (Manuelt bekreftet)");
+        };
+        buttonContainer.appendChild(manBtn);
+    };
+
     const checkInput = () => {
         const val = input.value.toUpperCase();
         
+        // Nullstill ved tom eller kort input
+        if (val.length < 4) {
+             nameDisplay.innerText = "";
+             iconBox.innerHTML = "";
+             iconBox.style.borderColor = "#e0e0e0";
+             status.innerText = ""; 
+             updateButton(false);
+             return;
+        }
+
         if (val.length === 4) {
             const airport = airportDB[val];
             if (airport) {
+                // Sett navn i boks 2
+                nameDisplay.innerText = airport.name;
+
                 if (airport.easa) {
-                    // ENDRET: Visning med pil og navn i blå farge
-                    status.innerHTML = `
-                        <div class="icao-result-container">
-                            <i class="fas fa-arrow-down icao-arrow"></i>
-                            <div class="icao-name">${airport.name}</div>
-                        </div>
-                    `;
-                    validIcon.classList.remove('hidden');
+                    // Grønn hake i boks 3
+                    iconBox.innerHTML = '<i class="fas fa-check" style="color: green;"></i>';
+                    iconBox.style.borderColor = "green";
+                    
+                    status.innerHTML = `<span style="color:var(--caa-blue)">${airport.name}</span> er en EASA-lufthavn.`;
                     updateButton(true, `${airport.name} (${val})`);
                 } else {
+                    // Rødt kryss i boks 3
+                    iconBox.innerHTML = '<i class="fas fa-times" style="color: red;"></i>';
+                    iconBox.style.borderColor = "red";
+
                     status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
                     status.style.color = "#d9534f";
-                    validIcon.classList.add('hidden');
                     updateButton(false);
                 }
             } else { 
+                // Ukjent kode
+                nameDisplay.innerText = "Ukjent";
+                iconBox.innerHTML = '<i class="fas fa-question" style="color: orange;"></i>';
+                iconBox.style.borderColor = "orange";
+                
                 status.innerText = "Ukjent ICAO-kode."; 
                 status.style.color = "#d9534f"; 
-                validIcon.classList.add('hidden');
-                updateButton(false);
+                showManualButton();
             }
-        } else { 
-            status.innerText = ""; 
-            validIcon.classList.add('hidden');
-            updateButton(false);
         }
     };
 
@@ -421,7 +448,6 @@ function handleServiceClick(option, secondaryContainer) {
     confirmBtn.className = 'btn-reset';
     confirmBtn.style.width = "100%";
     confirmBtn.style.marginBottom = "15px";
-    // ENDRET: Knappetekst til "Gå videre"
     confirmBtn.innerText = "Gå videre";
     confirmBtn.onclick = () => {
         userChoices.service = option.text;

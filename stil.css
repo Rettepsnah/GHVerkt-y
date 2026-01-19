@@ -69,7 +69,6 @@ h2 {
 .welcome-card { text-align: center; padding: 60px 40px; }
 .welcome-icon { font-size: 3rem; color: var(--caa-blue); margin-bottom: 20px; opacity: 0.9; }
 .welcome-card h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
-.lead-text { font-size: 1.2rem; color: #555; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
 .welcome-content { 
     background-color: #fafafa; 
@@ -144,39 +143,86 @@ h2 {
 .flow-step span { font-size: 0.8rem; font-weight: bold; color: var(--caa-blue); }
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.9rem; }
 
-/* ICAO INPUT */
+/* ICAO INPUT - NY LAYOUT (3 BOKSER) */
 #icao-search-container { 
     margin: 0 auto 30px auto; 
     text-align: center; 
-    max-width: 400px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 600px; /* Økt bredde for å få plass til 3 bokser */
+}
+
+/* Container for de tre boksene */
+.icao-three-box-container {
+    display: grid;
+    grid-template-columns: 100px 1fr 60px; /* Kode - Navn - Status */
     gap: 10px;
-}
-.icao-input-wrapper { 
-    position: relative; 
-    display: flex; 
     align-items: center;
-    justify-content: center;
-    gap: 15px; 
-    width: 100%; 
+    margin-top: 10px;
 }
+
+/* Boks 1: Input feltet */
 #icao-input { 
     padding: 15px; 
-    font-size: 1.4rem; 
+    font-size: 1.2rem; 
     text-align: center; 
-    width: 160px; /* Tilbake til mindre bredde for 4 tegn */
+    width: 100%; 
     border: 2px solid #ccc; 
-    border-radius: 8px; 
+    border-radius: 6px; 
     text-transform: uppercase; 
     transition: 0.3s; 
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    box-sizing: border-box;
+    height: 60px;
+}
+#icao-input:focus { border-color: var(--caa-blue); outline: none; }
+
+/* Boks 2: Visning av navn (Readonly input look) */
+#icao-name-display {
+    padding: 15px;
+    font-size: 1.1rem;
+    background-color: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    color: #555;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Boks 3: Status ikon */
+#icao-icon-box {
+    width: 100%;
+    height: 60px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+#icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; }
+
+/* Manuell knapp for ukjent ICAO */
+.btn-manual-confirm {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
     font-weight: 600;
 }
-#icao-input:focus { border-color: var(--caa-blue); outline: none; box-shadow: 0 0 0 4px rgba(26, 66, 126, 0.1); }
-#icao-valid-icon { position: static; color: var(--caa-success); font-size: 1.8rem; }
-#icao-status { margin-top: 15px; font-size: 1rem; font-weight: bold; min-height: 1.2em; }
+.btn-manual-confirm:hover { background-color: #ffe8a1; }
 
 /* INFOBOKSER */
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; margin-top: 30px; }
@@ -282,27 +328,6 @@ h2 {
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* STIL FOR LUFTHAVN-RESULTAT I STEG 1 (NY) */
-.icao-result-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    gap: 5px;
-}
-.icao-arrow {
-    color: var(--caa-blue);
-    font-size: 1.5rem;
-    animation: fadeIn 0.5s;
-}
-.icao-name {
-    color: var(--caa-blue); /* Samme farge som spørsmålsteksten (h2) */
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    animation: fadeIn 0.5s;
-}
-
 /* PRINT STYLES */
 @media print {
     .navbar, .btn-reset, .btn-back, .card-footer, .btn-print, .welcome-card { display: none !important; }
@@ -318,4 +343,6 @@ h2 {
     .info-grid { grid-template-columns: 1fr; }
     .nav-title { font-size: 1.2rem; line-height: 1.3; }
     .question-card { padding: 30px 20px; }
+    /* Tilpass 3-boks på mobil */
+    .icao-three-box-container { grid-template-columns: 1fr; gap: 5px; }
 }
