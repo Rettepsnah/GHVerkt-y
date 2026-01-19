@@ -93,17 +93,6 @@ const step2Info = `
     </div>
 `;
 
-// Ny gul boks for Steg 4
-const step4YellowBox = `
-    <div class="info-card-modern yellow" style="grid-column: span 2;">
-        <div class="info-content">
-            <h4>CARGO AND MAIL HANDLING IN A CARGO WAREHOUSE</h4>
-            <p>Merk at varehus som ikke ligger på lufthavnen, eller i umiddelbar nærhet, dvs. helt inntil flyplassgjerdet, er unntatt regelverket.</p>
-            <p style="margin-top:10px; font-style:italic;">"Only the cargo warehouses that are located at an aerodrome or adjacent to it and that are responsible for final cargo checks and acceptance before the cargo is loaded on the aircraft are included in the scope of Commission Delegated Regulation (EU) 2025/20."</p>
-        </div>
-    </div>
-`;
-
 // Detaljert innhold for Steg 3 (Tjenester)
 const serviceDetails = {
     passenger: `
@@ -184,14 +173,13 @@ const flow = [
     {
         id: "exemptions",
         question: "Noen tjenester og aktiviteter er unntatt regelverket - Er noen av disse aktuelle for deg?",
-        extraHtml: step4YellowBox, 
+        // ENDRET: Fjernet extraHtml, lagt den gule boksen til i options-listen som "static"
         layout: "grid",
         options: [
             { text: "Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
             { text: "Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
             { text: "Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
             { text: "Ground supervision", type: "dashed", action: "confirm_exempt" },
-            // ENDRET: Ny samleboks for vedlikehold
             { 
                 text: "For vedlikeholdsorganisasjoner iht. (EU) 1321/2014<br><br>Oil handling for the aircraft (including replenishment, servicing)<br><br>Aircraft exterior cleaning when performed by maintenance<br><br>Any other ground handling activity for the purpose of aircraft maintenance", 
                 type: "dashed", 
@@ -206,6 +194,19 @@ const flow = [
                 text: "For ADR - Lufthavnsoperatør<br><br>Handling of passengers with reduced mobility, or ground transportation of passengers and crew members, or both, when these are the only ground handling services provided by an aerodrome operator with its own personnel, not cumulated with other ground handling services provided by that aerodrome operator.", 
                 type: "dashed", 
                 action: "confirm_exempt" 
+            },
+            // ENDRET: Informasjonsboksen er nå et statisk element i gridet
+            {
+                type: "static",
+                html: `
+                    <div class="info-card-modern yellow grid-static-item">
+                        <div class="info-content">
+                            <h4>CARGO AND MAIL HANDLING IN A CARGO WAREHOUSE</h4>
+                            <p>Merk at varehus som ikke ligger på lufthavnen, eller i umiddelbar nærhet, dvs. helt inntil flyplassgjerdet, er unntatt regelverket.</p>
+                            <p style="margin-top:10px; font-style:italic;">"Only the cargo warehouses that are located at an aerodrome or adjacent to it and that are responsible for final cargo checks and acceptance before the cargo is loaded on the aircraft are included in the scope of Commission Delegated Regulation (EU) 2025/20."</p>
+                        </div>
+                    </div>
+                `
             }
         ],
         secondaryOption: { 
@@ -299,6 +300,16 @@ function renderStep(stepId, isBack = false) {
 
     if (stepId !== "easa_airport") {
         step.options.forEach(opt => {
+            
+            // ENDRET: Håndterer statiske bokser i grid-layout
+            if (opt.type === "static") {
+                const div = document.createElement('div');
+                div.innerHTML = opt.html;
+                div.style.height = "100%"; // Sikre at den fyller cellen
+                container.appendChild(div);
+                return; // Ikke lag knapp
+            }
+
             const btn = document.createElement('button');
             
             if (opt.type === "dashed") {
@@ -384,7 +395,8 @@ function renderStep(stepId, isBack = false) {
 
     if (step.secondaryOption) {
         const noBtn = document.createElement('button');
-        noBtn.className = 'btn-no';
+        // ENDRET: Bruker ny highlight-klasse
+        noBtn.className = 'btn-highlight-green';
         noBtn.innerText = step.secondaryOption.text;
         noBtn.onclick = () => showResult(step.secondaryOption.result);
         secondaryContainer.appendChild(noBtn);
