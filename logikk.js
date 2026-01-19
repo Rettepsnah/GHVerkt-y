@@ -191,16 +191,17 @@ const flow = [
             { text: "Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
             { text: "Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
             { text: "Ground supervision", type: "dashed", action: "confirm_exempt" },
-            { text: "Oil handling for the aircraft (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
-            { text: "Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
-            { text: "Any other ground handling activity for the purpose of aircraft maintenance (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
-            // ENDRET: Ny tekst for AOC/Self-handling
+            // ENDRET: Ny samleboks for vedlikehold
+            { 
+                text: "For vedlikeholdsorganisasjoner iht. (EU) 1321/2014<br><br>Oil handling for the aircraft (including replenishment, servicing)<br><br>Aircraft exterior cleaning when performed by maintenance<br><br>Any other ground handling activity for the purpose of aircraft maintenance", 
+                type: "dashed", 
+                action: "confirm_exempt" 
+            },
             { 
                 text: "FOR AOC<br><br>Commercial air transport operations with other-than-complex motor-powered aircraft<br><br>Any flight operations with complex or other-than-complex motor-powered aircraft that are not commercial air transport operations", 
                 type: "dashed", 
                 action: "confirm_exempt" 
             },
-            // ENDRET: Sammenslått boks for ADR/Transport/PRM
             { 
                 text: "For ADR - Lufthavnsoperatør<br><br>Handling of passengers with reduced mobility, or ground transportation of passengers and crew members, or both, when these are the only ground handling services provided by an aerodrome operator with its own personnel, not cumulated with other ground handling services provided by that aerodrome operator.", 
                 type: "dashed", 

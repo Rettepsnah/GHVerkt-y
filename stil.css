@@ -337,7 +337,7 @@ h2 {
 /* STIPLEDE BOKSER */
 .dashed-btn { 
     background-color: white; 
-    border: 2px dashed #4fc3f7; /* Lyseblå farge */
+    border: 2px dashed #4fc3f7; 
     color: #444; 
     text-align: left; 
     padding: 15px 20px; 
