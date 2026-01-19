@@ -143,23 +143,21 @@ h2 {
 .flow-step span { font-size: 0.8rem; font-weight: bold; color: var(--caa-blue); }
 .flow-arrow { color: var(--caa-blue); opacity: 0.3; font-size: 0.9rem; }
 
-/* ICAO INPUT - NY LAYOUT (3 BOKSER) */
+/* ICAO INPUT - 3 BOKSER */
 #icao-search-container { 
     margin: 0 auto 30px auto; 
     text-align: center; 
-    max-width: 600px; /* Økt bredde for å få plass til 3 bokser */
+    max-width: 600px; 
 }
 
-/* Container for de tre boksene */
 .icao-three-box-container {
     display: grid;
-    grid-template-columns: 100px 1fr 60px; /* Kode - Navn - Status */
+    grid-template-columns: 100px 1fr 60px; 
     gap: 10px;
     align-items: center;
     margin-top: 10px;
 }
 
-/* Boks 1: Input feltet */
 #icao-input { 
     padding: 15px; 
     font-size: 1.2rem; 
@@ -176,7 +174,6 @@ h2 {
 }
 #icao-input:focus { border-color: var(--caa-blue); outline: none; }
 
-/* Boks 2: Visning av navn (Readonly input look) */
 #icao-name-display {
     padding: 15px;
     font-size: 1.1rem;
@@ -194,7 +191,6 @@ h2 {
     text-overflow: ellipsis;
 }
 
-/* Boks 3: Status ikon */
 #icao-icon-box {
     width: 100%;
     height: 60px;
@@ -210,6 +206,18 @@ h2 {
 }
 
 #icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; }
+
+/* Spesifikk advarsel for helikopter (ENVY) */
+.helicopter-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: inline-block;
+    font-size: 0.9rem;
+}
 
 /* Manuell knapp for ukjent ICAO */
 .btn-manual-confirm {
@@ -252,6 +260,46 @@ h2 {
 .info-box ul { padding-left: 20px; margin: 0; }
 .info-box li { margin-bottom: 8px; }
 .service-info-display { background-color: #fff; border: 2px solid var(--caa-blue); padding: 25px; border-radius: 8px; margin: 25px 0; }
+
+/* STILER FOR DETALJERTE LISTER I STEG 3 */
+.detail-list {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;
+}
+.detail-list li {
+    margin-bottom: 8px;
+    color: #444;
+}
+
+/* STILER FOR VELG / LUKK KNAPPER I STEG 3 */
+.service-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+.btn-select {
+    flex: 1;
+    background-color: var(--caa-blue);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-select:hover { background-color: var(--caa-dark); }
+.btn-close {
+    flex: 1;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-close:hover { background-color: #e0e0e0; }
 
 /* Resultat oppsummering og melding */
 .summary-box {
@@ -343,6 +391,5 @@ h2 {
     .info-grid { grid-template-columns: 1fr; }
     .nav-title { font-size: 1.2rem; line-height: 1.3; }
     .question-card { padding: 30px 20px; }
-    /* Tilpass 3-boks på mobil */
     .icao-three-box-container { grid-template-columns: 1fr; gap: 5px; }
 }
