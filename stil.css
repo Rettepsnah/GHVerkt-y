@@ -270,7 +270,6 @@ h2 {
     margin-bottom: 10px;
 }
 
-/* NYTT: Hjelpeklasse for statiske bokser i grid */
 .grid-static-item {
     height: 100%;
     box-sizing: border-box;
@@ -363,22 +362,42 @@ h2 {
 
 .button-grid-secondary { margin-top: 20px; }
 
-/* ENDRET: Ny knappestil for "Nei" / "Ingen av disse" - Fremhevet lysegrønn */
+/* Grønn highlight (Steg 2 & 3) */
 .btn-highlight-green {
     width: 100%;
-    background-color: #e8f5e9; /* Lysegrønn */
+    background-color: #e8f5e9;
     border: 2px solid #a5d6a7;
     color: #1b5e20;
-    padding: 18px; /* Litt større padding */
+    padding: 18px;
     border-radius: 6px;
-    font-weight: 700; /* Tykkere skrift */
+    font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
-    font-size: 1.1rem; /* Litt større tekst */
+    font-size: 1.1rem;
     margin-top: 15px;
 }
 .btn-highlight-green:hover {
     background-color: #c8e6c9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ENDRET: Gul highlight (Steg 4) */
+.btn-highlight-yellow {
+    width: 100%;
+    background-color: #fffde7;
+    border: 2px solid #fdd835;
+    color: #f57f17; /* Mørk oransje/gul tekst */
+    padding: 18px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+.btn-highlight-yellow:hover {
+    background-color: #fff9c4;
     transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }

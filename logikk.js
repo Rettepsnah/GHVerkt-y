@@ -173,29 +173,30 @@ const flow = [
     {
         id: "exemptions",
         question: "Noen tjenester og aktiviteter er unntatt regelverket - Er noen av disse aktuelle for deg?",
-        // ENDRET: Fjernet extraHtml, lagt den gule boksen til i options-listen som "static"
         layout: "grid",
         options: [
             { text: "Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
             { text: "Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
             { text: "Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
             { text: "Ground supervision", type: "dashed", action: "confirm_exempt" },
+            // ENDRET: Uthevet fet skrift
             { 
-                text: "For vedlikeholdsorganisasjoner iht. (EU) 1321/2014<br><br>Oil handling for the aircraft (including replenishment, servicing)<br><br>Aircraft exterior cleaning when performed by maintenance<br><br>Any other ground handling activity for the purpose of aircraft maintenance", 
+                text: "<strong>For vedlikeholdsorganisasjoner iht. (EU) No 1321/2014)</strong><br><br>Oil handling for the aircraft (including replenishment, servicing)<br><br>Aircraft exterior cleaning when performed by maintenance<br><br>Any other ground handling activity for the purpose of aircraft maintenance", 
                 type: "dashed", 
                 action: "confirm_exempt" 
             },
+            // ENDRET: Uthevet fet skrift
             { 
-                text: "FOR AOC<br><br>Commercial air transport operations with other-than-complex motor-powered aircraft<br><br>Any flight operations with complex or other-than-complex motor-powered aircraft that are not commercial air transport operations", 
+                text: "<strong>For AOC</strong><br><br>Commercial air transport operations with other-than-complex motor-powered aircraft<br><br>Any flight operations with complex or other-than-complex motor-powered aircraft that are not commercial air transport operations", 
                 type: "dashed", 
                 action: "confirm_exempt" 
             },
+            // ENDRET: Uthevet fet skrift
             { 
-                text: "For ADR - Lufthavnsoperatør<br><br>Handling of passengers with reduced mobility, or ground transportation of passengers and crew members, or both, when these are the only ground handling services provided by an aerodrome operator with its own personnel, not cumulated with other ground handling services provided by that aerodrome operator.", 
+                text: "<strong>For ADR - Lufthavnsoperatør</strong><br><br>Handling of passengers with reduced mobility, or ground transportation of passengers and crew members, or both, when these are the only ground handling services provided by an aerodrome operator with its own personnel, not cumulated with other ground handling services provided by that aerodrome operator.", 
                 type: "dashed", 
                 action: "confirm_exempt" 
             },
-            // ENDRET: Informasjonsboksen er nå et statisk element i gridet
             {
                 type: "static",
                 html: `
@@ -301,13 +302,12 @@ function renderStep(stepId, isBack = false) {
     if (stepId !== "easa_airport") {
         step.options.forEach(opt => {
             
-            // ENDRET: Håndterer statiske bokser i grid-layout
             if (opt.type === "static") {
                 const div = document.createElement('div');
                 div.innerHTML = opt.html;
-                div.style.height = "100%"; // Sikre at den fyller cellen
+                div.style.height = "100%"; 
                 container.appendChild(div);
-                return; // Ikke lag knapp
+                return; 
             }
 
             const btn = document.createElement('button');
@@ -395,8 +395,14 @@ function renderStep(stepId, isBack = false) {
 
     if (step.secondaryOption) {
         const noBtn = document.createElement('button');
-        // ENDRET: Bruker ny highlight-klasse
-        noBtn.className = 'btn-highlight-green';
+        
+        // ENDRET: Gul knapp kun for steg 4, grønn for andre
+        if (stepId === 'exemptions') {
+            noBtn.className = 'btn-highlight-yellow';
+        } else {
+            noBtn.className = 'btn-highlight-green';
+        }
+        
         noBtn.innerText = step.secondaryOption.text;
         noBtn.onclick = () => showResult(step.secondaryOption.result);
         secondaryContainer.appendChild(noBtn);
