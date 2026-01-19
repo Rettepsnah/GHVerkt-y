@@ -111,7 +111,6 @@ h2 {
     margin-bottom: 10px;
 }
 
-/* ENDRET: Økt font-størrelse for start-knapp */
 .btn-start { 
     width: 100%; 
     max-width: 300px; 
@@ -120,7 +119,7 @@ h2 {
     background-color: var(--caa-blue); 
     color: white; 
     border: 2px solid var(--caa-blue); 
-    font-size: 1.3rem; /* Større tekst */
+    font-size: 1.3rem; 
 }
 .btn-start:hover { 
     background-color: white; 
@@ -338,7 +337,7 @@ h2 {
 /* STIPLEDE BOKSER */
 .dashed-btn { 
     background-color: white; 
-    border: 2px dashed #4fc3f7; /* ENDRET: Lyseblå farge */
+    border: 2px dashed #4fc3f7; /* Lyseblå farge */
     color: #444; 
     text-align: left; 
     padding: 15px 20px; 

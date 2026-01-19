@@ -82,7 +82,7 @@ const step1Info = `
     </div>
 `;
 
-// Data for infoboks i Steg 2 - ENDRET: Endret til yellow (oransje stil)
+// Data for infoboks i Steg 2
 const step2Info = `
     <div class="info-card-modern yellow" style="grid-column: span 2;">
         <i class="fas fa-plane info-icon"></i>
@@ -93,7 +93,7 @@ const step2Info = `
     </div>
 `;
 
-// Ny gul boks for Steg 4 - ENDRET: Oppdatert tekst
+// Ny gul boks for Steg 4
 const step4YellowBox = `
     <div class="info-card-modern yellow" style="grid-column: span 2;">
         <div class="info-content">
@@ -194,9 +194,18 @@ const flow = [
             { text: "Oil handling for the aircraft (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
             { text: "Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
             { text: "Any other ground handling activity for the purpose of aircraft maintenance (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
-            { text: "Transport av passasjerer og crew (hvis dette er eneste tjeneste)", type: "dashed", action: "confirm_exempt" },
-            { text: "Self-handling for ikke-kommersielle eller små fly", type: "dashed", action: "confirm_exempt" },
-            { text: "Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)", type: "dashed", action: "confirm_exempt" }
+            // ENDRET: Ny tekst for AOC/Self-handling
+            { 
+                text: "FOR AOC<br><br>Commercial air transport operations with other-than-complex motor-powered aircraft<br><br>Any flight operations with complex or other-than-complex motor-powered aircraft that are not commercial air transport operations", 
+                type: "dashed", 
+                action: "confirm_exempt" 
+            },
+            // ENDRET: Sammenslått boks for ADR/Transport/PRM
+            { 
+                text: "For ADR - Lufthavnsoperatør<br><br>Handling of passengers with reduced mobility, or ground transportation of passengers and crew members, or both, when these are the only ground handling services provided by an aerodrome operator with its own personnel, not cumulated with other ground handling services provided by that aerodrome operator.", 
+                type: "dashed", 
+                action: "confirm_exempt" 
+            }
         ],
         secondaryOption: { 
             text: "Nei", 
