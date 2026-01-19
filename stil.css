@@ -205,9 +205,10 @@ h2 {
     transition: 0.3s;
 }
 
-#icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; }
+#icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; color: black; } /* Endret til svart */
+#icao-status a { color: var(--caa-blue); text-decoration: underline; }
 
-/* Spesifikk advarsel for helikopter (ENVY) */
+/* Spesifikk advarsel for helikopter */
 .helicopter-warning {
     color: #856404;
     background-color: #fff3cd;
@@ -250,6 +251,19 @@ h2 {
 
 .info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
 
+/* NY: Gul boks for Steg 4 */
+.info-card-modern.yellow {
+    background-color: #fffde7; 
+    border-left-color: #fbc02d;
+    color: #333;
+}
+.info-card-modern.yellow h4 {
+    color: #f57f17;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
 .info-header-row { display: flex; align-items: flex-start; gap: 15px; width: 100%; }
 .info-icon { font-size: 1.6rem; color: rgba(0,0,0,0.3); flex-shrink: 0; margin-top: 2px; }
 .info-content h4 { margin: 0 0 8px 0; font-size: 1.1rem; color: #333; font-weight: 700; } 
@@ -261,44 +275,14 @@ h2 {
 .info-box li { margin-bottom: 8px; }
 .service-info-display { background-color: #fff; border: 2px solid var(--caa-blue); padding: 25px; border-radius: 8px; margin: 25px 0; }
 
-/* STILER FOR DETALJERTE LISTER I STEG 3 */
-.detail-list {
-    text-align: left;
-    margin: 15px 0;
-    padding-left: 20px;
-}
-.detail-list li {
-    margin-bottom: 8px;
-    color: #444;
-}
+.detail-list { text-align: left; margin: 15px 0; padding-left: 20px; }
+.detail-list li { margin-bottom: 8px; color: #444; }
 
-/* STILER FOR VELG / LUKK KNAPPER I STEG 3 */
-.service-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-.btn-select {
-    flex: 1;
-    background-color: var(--caa-blue);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-}
+/* KNAPPER */
+.service-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-select { flex: 1; background-color: var(--caa-blue); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 .btn-select:hover { background-color: var(--caa-dark); }
-.btn-close {
-    flex: 1;
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-}
+.btn-close { flex: 1; background-color: #f0f0f0; color: #333; border: 1px solid #ccc; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
 .btn-close:hover { background-color: #e0e0e0; }
 
 /* Resultat oppsummering og melding */
@@ -349,21 +333,11 @@ h2 {
 .dashed-btn:hover { border-color: var(--caa-blue); background-color: #f0f7ff; color: var(--caa-blue); border-style: solid; }
 .dashed-btn.selected { background-color: #e8f5e9; border-color: var(--caa-success); color: #2e7d32; border-style: dashed; font-weight: 700; }
 
-/* Sekundære knapper */
 .button-grid-secondary { margin-top: 20px; }
 .btn-no { width: 100%; background-color: #fff; border: 2px solid #e0e0e0; color: #666; padding: 15px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
 .btn-no:hover { background-color: #f5f5f5; border-color: #999; color: #333; }
 
-.btn-print { 
-    margin-left: 10px; 
-    background-color: #e67e22; 
-    color: white; 
-    border: none; 
-    padding: 15px 20px; 
-    border-radius: 6px; 
-    font-weight: 600; 
-    cursor: pointer; 
-}
+.btn-print { margin-left: 10px; background-color: #e67e22; color: white; border: none; padding: 15px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
 .btn-print:hover { background-color: #d35400; }
 
 .btn-reset { background-color: var(--caa-blue); color: white; border: none; padding: 15px 35px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 1.1rem; }
@@ -376,7 +350,6 @@ h2 {
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* PRINT STYLES */
 @media print {
     .navbar, .btn-reset, .btn-back, .card-footer, .btn-print, .welcome-card { display: none !important; }
     .container { margin-top: 0; max-width: 100%; }

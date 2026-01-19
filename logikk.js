@@ -45,8 +45,9 @@ const airportDB = {
     "ENBV": { name: "Berlevåg lufthavn", easa: true },
     "ENHK": { name: "Hasvik lufthavn", easa: true },
     "ENSK": { name: "Stokmarknes lufthavn", easa: true },
-    // NY LUFTHAVN MED HELIKOPTER FLAGG
-    "ENVY": { name: "Værøy Helikopterhavn, Tabbisodden", easa: true, isHelicopter: true }
+    "ENVY": { name: "Værøy Helikopterhavn, Tabbisodden", easa: true, isHelicopter: true },
+    // NY LUFTHAVN
+    "ENNO": { name: "Notodden lufthavn, Tuven", easa: false }
 };
 
 // Data for infobokser i Steg 1
@@ -89,6 +90,16 @@ const step2Info = `
         <div class="info-content">
             <h4>For flyselskaper (AOC)</h4>
             <p>Regelverket gjelder kun for <strong>CAT-operasjoner</strong> med komplekse motordrevne luftfartøy. Helikopter er unntatt fra dette regelverket.</p>
+        </div>
+    </div>
+`;
+
+// Ny gul boks for Steg 4
+const step4YellowBox = `
+    <div class="info-card-modern yellow" style="grid-column: span 2;">
+        <div class="info-content">
+            <h4>CARGO AND MAIL HANDLING IN A CARGO WAREHOUSE</h4>
+            <p>Only the cargo warehouses that are located at an aerodrome or adjacent to it and that are responsible for final cargo checks and acceptance before the cargo is loaded on the aircraft are included in the scope of Commission Delegated Regulation (EU) 2025/20.</p>
         </div>
     </div>
 `;
@@ -159,11 +170,10 @@ const flow = [
     },
     {
         id: "service_type",
-        question: "Type tjenester?",
-        // ENDRET: Fjernet extraHtml her
+        // ENDRET: Nytt spørsmål
+        question: "Hvilken type tjenester leverer du?",
         layout: "horizontal",
         options: [
-            // ENDRET: Lagt til detalj-nøkkel
             { text: "Passenger Handling", icon: "fa-users", detailKey: "passenger", isService: true },
             { text: "Baggage Handling", icon: "fa-suitcase", detailKey: "baggage", isService: true },
             { text: "Aircraft Servicing", icon: "fa-plane-arrival", detailKey: "aircraft", isService: true },
@@ -174,20 +184,24 @@ const flow = [
     },
     {
         id: "exemptions",
-        question: "Noen tjenester og aktiviteter er unntatt - Er noen av disse aktuelle for deg?",
-        extraHtml: `<h4>Regulation (EU) 2025/20 - Article 2 - Scope - 3.</h4>`, 
+        // ENDRET: Nytt spørsmål
+        question: "Noen tjenester og aktiviteter er unntatt regelverket - Er noen av disse aktuelle for deg?",
+        // ENDRET: Lagt til gul boks
+        extraHtml: step4YellowBox, 
         layout: "grid",
+        // ENDRET: Fjernet bokstaver, oppdatert tekster
         options: [
-            { text: "(a) Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
-            { text: "(b) Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
-            { text: "(c) Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
-            { text: "(d) Ground supervision", type: "dashed", action: "confirm_exempt" },
-            { text: "(e) Oil handling for the aircraft (utført av vedlikeholdsorganisasjon)", type: "dashed", action: "confirm_exempt" },
-            { text: "(f) Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon)", type: "dashed", action: "confirm_exempt" },
-            { text: "(g) Andre bakketjenester utført i forbindelse med vedlikehold", type: "dashed", action: "confirm_exempt" },
-            { text: "(h) Transport av passasjerer og crew (hvis dette er eneste tjeneste)", type: "dashed", action: "confirm_exempt" },
-            { text: "(i) Self-handling for ikke-kommersielle eller små fly", type: "dashed", action: "confirm_exempt" },
-            { text: "(j) Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)", type: "dashed", action: "confirm_exempt" }
+            { text: "Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
+            { text: "Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
+            { text: "Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
+            { text: "Ground supervision", type: "dashed", action: "confirm_exempt" },
+            // Oppdatert med (EU) No 1321/2014
+            { text: "Oil handling for the aircraft (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
+            { text: "Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
+            { text: "Any other ground handling activity for the purpose of aircraft maintenance (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
+            { text: "Transport av passasjerer og crew (hvis dette er eneste tjeneste)", type: "dashed", action: "confirm_exempt" },
+            { text: "Self-handling for ikke-kommersielle eller små fly", type: "dashed", action: "confirm_exempt" },
+            { text: "Assistanse til PRM (hvis utført av lufthavnoperatør uten andre tjenester)", type: "dashed", action: "confirm_exempt" }
         ],
         secondaryOption: { 
             text: "Nei", 
@@ -300,9 +314,8 @@ function renderStep(stepId, isBack = false) {
                 if (stepId === "entity_type") userChoices.entity = opt.text;
 
                 if (opt.isService) {
-                    // ENDRET: Ny håndtering for Steg 3 (Velg/Lukk)
                     container.querySelectorAll('.continue-button').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected'); // Visuelt marker knappen som aktiv mens boksen er åpen
+                    btn.classList.add('selected'); 
                     handleServiceClickNew(opt, secondaryContainer, container, btn);
                 } 
                 else if (opt.action === "confirm_exempt") {
@@ -354,7 +367,6 @@ function renderStep(stepId, isBack = false) {
     }
     
     if (stepId === "service_type") {
-        // I Steg 3, legg serviceBox ETTER knappene (options-container), men FØR secondary
         contentArea.insertBefore(serviceBox, secondaryContainer);
     }
 
@@ -419,6 +431,9 @@ function setupICAOListener(buttonContainer) {
         buttonContainer.appendChild(manBtn);
     };
 
+    // ENDRET: Lagt til EASA lenke
+    const easaLink = `<br><br><a href="https://www.easa.europa.eu/en/datasets/aerodromes-falling-scope-regulation-eu-20181139" target="_blank">Se EASA sin oversikt over lufthavner her</a>`;
+
     const checkInput = () => {
         const val = input.value.toUpperCase();
         
@@ -437,31 +452,31 @@ function setupICAOListener(buttonContainer) {
                 nameDisplay.innerText = airport.name;
 
                 if (airport.easa) {
-                    // Grønn hake
                     iconBox.innerHTML = '<i class="fas fa-check" style="color: green;"></i>';
                     iconBox.style.borderColor = "green";
                     
-                    // ENDRET: Sjekk for helikopter-unntak
                     if (airport.isHelicopter) {
+                         // ENDRET: Tekstfarge til svart (ved å ikke bruke CSS class for blå)
                          status.innerHTML = `
-                            <span style="color:var(--caa-blue)">${airport.name}</span> er en EASA-lufthavn.
+                            ${airport.name} er en EASA-lufthavn.
                             <div class="helicopter-warning">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 <strong>OBS:</strong> Denne lufthavnen er unntatt da helikopterdrift ikke omfattes av regelverket.
                             </div>
+                            ${easaLink}
                         `;
                     } else {
-                         status.innerHTML = `<span style="color:var(--caa-blue)">${airport.name}</span> er en EASA-lufthavn.`;
+                         // ENDRET: Tekstfarge til svart
+                         status.innerHTML = `${airport.name} er en EASA-lufthavn.${easaLink}`;
                     }
                     
                     updateButton(true, `${airport.name} (${val})`);
                 } else {
-                    // Rødt kryss
                     iconBox.innerHTML = '<i class="fas fa-times" style="color: red;"></i>';
                     iconBox.style.borderColor = "red";
 
-                    status.innerText = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).`;
-                    status.style.color = "#d9534f";
+                    // ENDRET: Tekstfarge til svart (fjernet rød farge styling her, eller satt style="color:black")
+                    status.innerHTML = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).${easaLink}`;
                     updateButton(false);
                 }
             } else { 
@@ -469,8 +484,7 @@ function setupICAOListener(buttonContainer) {
                 iconBox.innerHTML = '<i class="fas fa-question" style="color: orange;"></i>';
                 iconBox.style.borderColor = "orange";
                 
-                status.innerText = "Ukjent ICAO-kode."; 
-                status.style.color = "#d9534f"; 
+                status.innerHTML = `Ukjent ICAO-kode.${easaLink}`; 
                 showManualButton();
             }
         }
@@ -480,20 +494,16 @@ function setupICAOListener(buttonContainer) {
     if(input.value.length === 4) checkInput();
 }
 
-// NY FUNKSJON FOR STEG 3 INTERAKSJON (VELG/LUKK)
 function handleServiceClickNew(option, secondaryContainer, buttonContainer, clickedBtn) {
     const serviceBox = document.getElementById('service-detail-box');
     
-    // Fjern eventuell eksisterende "Gå videre" knapp i secondary (hvis man bytter valg)
     const oldNextBtn = document.getElementById('next-step-btn');
     if (oldNextBtn) oldNextBtn.remove();
 
     serviceBox.classList.remove('hidden');
     
-    // Hent detaljer
     const detailContent = serviceDetails[option.detailKey] || "<p>Ingen detaljer.</p>";
     
-    // Bygg innhold med Velg/Lukk knapper
     serviceBox.innerHTML = `
         <h4>${option.text}</h4>
         ${detailContent}
@@ -503,20 +513,15 @@ function handleServiceClickNew(option, secondaryContainer, buttonContainer, clic
         </div>
     `;
 
-    // Lukk-knapp logikk
     document.getElementById('btn-close-service').onclick = () => {
         serviceBox.classList.add('hidden');
         clickedBtn.classList.remove('selected');
-        // Fjern Gå Videre knapp hvis den finnes
         if(document.getElementById('next-step-btn')) document.getElementById('next-step-btn').remove();
     };
 
-    // Velg-knapp logikk
     document.getElementById('btn-select-service').onclick = () => {
-        // Marker valg og scroll ned om nødvendig
         userChoices.service = option.text;
         
-        // Vis "Gå videre" knapp i secondary container
         const nextBtn = document.createElement('button');
         nextBtn.id = 'next-step-btn';
         nextBtn.className = 'btn-reset';
@@ -530,11 +535,9 @@ function handleServiceClickNew(option, secondaryContainer, buttonContainer, clic
         
         secondaryContainer.insertBefore(nextBtn, secondaryContainer.firstChild);
         
-        // Feedback på at det er valgt (kan f.eks. lukke boksen eller endre knapptekst, 
-        // men prompt sa bare "Gå videre blir synlig". Vi beholder boksen åpen for bekreftelse)
         document.getElementById('btn-select-service').innerText = "Valgt";
         document.getElementById('btn-select-service').disabled = true;
-        document.getElementById('btn-select-service').style.backgroundColor = "#6A8E7F"; // Grønn
+        document.getElementById('btn-select-service').style.backgroundColor = "#6A8E7F"; 
     };
 }
 
