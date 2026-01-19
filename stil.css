@@ -111,7 +111,17 @@ h2 {
     margin-bottom: 10px;
 }
 
-.btn-start { width: 100%; max-width: 300px; margin: 0 auto; justify-content: center; background-color: var(--caa-blue); color: white; border: 2px solid var(--caa-blue); }
+/* ENDRET: Økt font-størrelse for start-knapp */
+.btn-start { 
+    width: 100%; 
+    max-width: 300px; 
+    margin: 0 auto; 
+    justify-content: center; 
+    background-color: var(--caa-blue); 
+    color: white; 
+    border: 2px solid var(--caa-blue); 
+    font-size: 1.3rem; /* Større tekst */
+}
 .btn-start:hover { 
     background-color: white; 
     color: var(--caa-blue); 
@@ -205,10 +215,9 @@ h2 {
     transition: 0.3s;
 }
 
-#icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; color: black; } /* Endret til svart */
+#icao-status { margin-top: 15px; font-size: 0.95rem; min-height: 1.2em; color: black; } 
 #icao-status a { color: var(--caa-blue); text-decoration: underline; }
 
-/* Spesifikk advarsel for helikopter */
 .helicopter-warning {
     color: #856404;
     background-color: #fff3cd;
@@ -220,7 +229,6 @@ h2 {
     font-size: 0.9rem;
 }
 
-/* Manuell knapp for ukjent ICAO */
 .btn-manual-confirm {
     background-color: #fff3cd;
     color: #856404;
@@ -251,7 +259,6 @@ h2 {
 
 .info-card-modern.blue { background-color: #e3f2fd; border-left-color: #2196f3; }
 
-/* NY: Gul boks for Steg 4 */
 .info-card-modern.yellow {
     background-color: #fffde7; 
     border-left-color: #fbc02d;
@@ -329,7 +336,23 @@ h2 {
 .continue-button.selected div { color: white !important; }
 
 /* STIPLEDE BOKSER */
-.dashed-btn { background-color: white; border: 2px dashed #999; color: #444; text-align: left; padding: 15px 20px; border-radius: 6px; cursor: pointer; transition: 0.2s; width: 100%; font-size: 0.95rem; font-weight: 500; box-sizing: border-box; height: 100%; display: flex; align-items: center; }
+.dashed-btn { 
+    background-color: white; 
+    border: 2px dashed #4fc3f7; /* ENDRET: Lyseblå farge */
+    color: #444; 
+    text-align: left; 
+    padding: 15px 20px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    width: 100%; 
+    font-size: 0.95rem; 
+    font-weight: 500; 
+    box-sizing: border-box; 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
+}
 .dashed-btn:hover { border-color: var(--caa-blue); background-color: #f0f7ff; color: var(--caa-blue); border-style: solid; }
 .dashed-btn.selected { background-color: #e8f5e9; border-color: var(--caa-success); color: #2e7d32; border-style: dashed; font-weight: 700; }
 

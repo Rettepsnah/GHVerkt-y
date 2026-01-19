@@ -46,7 +46,6 @@ const airportDB = {
     "ENHK": { name: "Hasvik lufthavn", easa: true },
     "ENSK": { name: "Stokmarknes lufthavn", easa: true },
     "ENVY": { name: "Værøy Helikopterhavn, Tabbisodden", easa: true, isHelicopter: true },
-    // NY LUFTHAVN
     "ENNO": { name: "Notodden lufthavn, Tuven", easa: false }
 };
 
@@ -83,9 +82,9 @@ const step1Info = `
     </div>
 `;
 
-// Data for infoboks i Steg 2
+// Data for infoboks i Steg 2 - ENDRET: Endret til yellow (oransje stil)
 const step2Info = `
-    <div class="info-card-modern blue" style="grid-column: span 2;">
+    <div class="info-card-modern yellow" style="grid-column: span 2;">
         <i class="fas fa-plane info-icon"></i>
         <div class="info-content">
             <h4>For flyselskaper (AOC)</h4>
@@ -94,12 +93,13 @@ const step2Info = `
     </div>
 `;
 
-// Ny gul boks for Steg 4
+// Ny gul boks for Steg 4 - ENDRET: Oppdatert tekst
 const step4YellowBox = `
     <div class="info-card-modern yellow" style="grid-column: span 2;">
         <div class="info-content">
             <h4>CARGO AND MAIL HANDLING IN A CARGO WAREHOUSE</h4>
-            <p>Only the cargo warehouses that are located at an aerodrome or adjacent to it and that are responsible for final cargo checks and acceptance before the cargo is loaded on the aircraft are included in the scope of Commission Delegated Regulation (EU) 2025/20.</p>
+            <p>Merk at varehus som ikke ligger på lufthavnen, eller i umiddelbar nærhet, dvs. helt inntil flyplassgjerdet, er unntatt regelverket.</p>
+            <p style="margin-top:10px; font-style:italic;">"Only the cargo warehouses that are located at an aerodrome or adjacent to it and that are responsible for final cargo checks and acceptance before the cargo is loaded on the aircraft are included in the scope of Commission Delegated Regulation (EU) 2025/20."</p>
         </div>
     </div>
 `;
@@ -170,7 +170,6 @@ const flow = [
     },
     {
         id: "service_type",
-        // ENDRET: Nytt spørsmål
         question: "Hvilken type tjenester leverer du?",
         layout: "horizontal",
         options: [
@@ -184,18 +183,14 @@ const flow = [
     },
     {
         id: "exemptions",
-        // ENDRET: Nytt spørsmål
         question: "Noen tjenester og aktiviteter er unntatt regelverket - Er noen av disse aktuelle for deg?",
-        // ENDRET: Lagt til gul boks
         extraHtml: step4YellowBox, 
         layout: "grid",
-        // ENDRET: Fjernet bokstaver, oppdatert tekster
         options: [
             { text: "Marshalling of aircraft", type: "dashed", action: "confirm_exempt" },
             { text: "Flight dispatch tasks (Regulation (EU) No 965/2012)", type: "dashed", action: "confirm_exempt" },
             { text: "Load control tasks (load planning, mass and balance, etc.)", type: "dashed", action: "confirm_exempt" },
             { text: "Ground supervision", type: "dashed", action: "confirm_exempt" },
-            // Oppdatert med (EU) No 1321/2014
             { text: "Oil handling for the aircraft (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
             { text: "Aircraft exterior cleaning (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
             { text: "Any other ground handling activity for the purpose of aircraft maintenance (utført av vedlikeholdsorganisasjon iht. (EU) No 1321/2014)", type: "dashed", action: "confirm_exempt" },
@@ -431,7 +426,6 @@ function setupICAOListener(buttonContainer) {
         buttonContainer.appendChild(manBtn);
     };
 
-    // ENDRET: Lagt til EASA lenke
     const easaLink = `<br><br><a href="https://www.easa.europa.eu/en/datasets/aerodromes-falling-scope-regulation-eu-20181139" target="_blank">Se EASA sin oversikt over lufthavner her</a>`;
 
     const checkInput = () => {
@@ -456,7 +450,6 @@ function setupICAOListener(buttonContainer) {
                     iconBox.style.borderColor = "green";
                     
                     if (airport.isHelicopter) {
-                         // ENDRET: Tekstfarge til svart (ved å ikke bruke CSS class for blå)
                          status.innerHTML = `
                             ${airport.name} er en EASA-lufthavn.
                             <div class="helicopter-warning">
@@ -466,7 +459,6 @@ function setupICAOListener(buttonContainer) {
                             ${easaLink}
                         `;
                     } else {
-                         // ENDRET: Tekstfarge til svart
                          status.innerHTML = `${airport.name} er en EASA-lufthavn.${easaLink}`;
                     }
                     
@@ -475,7 +467,6 @@ function setupICAOListener(buttonContainer) {
                     iconBox.innerHTML = '<i class="fas fa-times" style="color: red;"></i>';
                     iconBox.style.borderColor = "red";
 
-                    // ENDRET: Tekstfarge til svart (fjernet rød farge styling her, eller satt style="color:black")
                     status.innerHTML = `${airport.name} er IKKE en EASA-lufthavn (Unntatt).${easaLink}`;
                     updateButton(false);
                 }
